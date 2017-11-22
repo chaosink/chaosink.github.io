@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Lua,笔记," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="14 The Environment这章有点难理解，有些段落反复看了好多遍才感觉好像是看懂了。">
+<meta name="keywords" content="Lua,笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Programming in Lua(Thrid Edition)笔记---14 The Environment">
+<meta property="og:url" content="http://chaosink.github.io/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-14-The-Environment/index.html">
+<meta property="og:site_name" content="Lin&#39;s Blog">
+<meta property="og:description" content="14 The Environment这章有点难理解，有些段落反复看了好多遍才感觉好像是看懂了。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2015-09-25T09:29:29.606Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Programming in Lua(Thrid Edition)笔记---14 The Environment">
+<meta name="twitter:description" content="14 The Environment这章有点难理解，有些段落反复看了好多遍才感觉好像是看懂了。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chaosink.github.io/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-14-The-Environment/"/>
+
+
+
+
+
+  <title>Programming in Lua(Thrid Edition)笔记---14 The Environment | Lin's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lin's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chaosink.github.io/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-14-The-Environment/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lin Hsu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Programming in Lua(Thrid Edition)笔记---14 The Environment</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-09-07T17:00:18+08:00">
+                2015-09-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="14-The-Environment"><a href="#14-The-Environment" class="headerlink" title="14 The Environment"></a>14 The Environment</h3><p>这章有点难理解，有些段落反复看了好多遍才感觉好像是看懂了。<br><a id="more"></a></p>
+<ul>
+<li><p>Lua将所有全局变量存储在一个叫做global environment的table中</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> n <span class="keyword">in</span> <span class="built_in">pairs</span>(<span class="built_in">_G</span>) <span class="keyword">do</span> <span class="built_in">print</span>(n) <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对于动态变量名，可动态创建chunk并编译：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="number">1</span></span><br><span class="line">varname = <span class="string">"x"</span></span><br><span class="line">value = loadstring(<span class="string">"return "</span> .. varname)</span><br><span class="line"><span class="built_in">print</span>(value()) <span class="comment">--&gt; 1</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这样的消耗较多，可用global environment：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">val = <span class="built_in">_G</span>[varname]</span><br><span class="line"><span class="built_in">print</span>(val) <span class="comment">--&gt; 1</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p><code>_G[&quot;a&quot;] = _G[&quot;var1&quot;]</code>写法繁琐，应简写为<code>a = var1</code></p>
+</li>
+<li><p><code>_G[&quot;io.read&quot;]</code>无法获得<code>io</code>table的<code>read</code>域，可用以下<code>getfield()</code>实现：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getfield</span><span class="params">(f)</span></span></span><br><span class="line">	<span class="keyword">local</span> v = <span class="built_in">_G</span> <span class="comment">-- start with the table of globals</span></span><br><span class="line">	<span class="keyword">for</span> w <span class="keyword">in</span> <span class="built_in">string</span>.<span class="built_in">gmatch</span>(f, <span class="string">"[%w_]+"</span>) <span class="keyword">do</span></span><br><span class="line">		v = v[w]</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="keyword">return</span> v</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">getfield(<span class="string">"io.write"</span>)(<span class="string">"1\n"</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过<code>_G</code>设置多级全局变量：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setfield</span><span class="params">(f, v)</span></span></span><br><span class="line">	<span class="keyword">local</span> t = <span class="built_in">_G</span> <span class="comment">-- start with the table of globals</span></span><br><span class="line">	<span class="keyword">for</span> w, d <span class="keyword">in</span> <span class="built_in">string</span>.<span class="built_in">gmatch</span>(f, <span class="string">"([%w_]+)(%.?)"</span>) <span class="keyword">do</span></span><br><span class="line">		<span class="keyword">if</span> d == <span class="string">"."</span> <span class="keyword">then</span> <span class="comment">-- not last name?</span></span><br><span class="line">			t[w] = t[w] <span class="keyword">or</span> &#123;&#125; <span class="comment">-- create table if absent</span></span><br><span class="line">			t = t[w] <span class="comment">-- get the table</span></span><br><span class="line">		<span class="keyword">else</span> <span class="comment">-- last name</span></span><br><span class="line">			t[w] = v <span class="comment">-- do the assignment</span></span><br><span class="line">		<span class="keyword">end</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">setfield(<span class="string">"t.x.y"</span>, <span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(t.x.y) <span class="comment">--&gt; 1</span></span><br><span class="line"><span class="built_in">print</span>(getfield(<span class="string">"t.x.y"</span>)) <span class="comment">--&gt; 1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>全局变量声明，因为全局变量存储在table<code>_G</code>中，所以可以通过metatable处理未定义元素的操作：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setmetatable</span>(<span class="built_in">_G</span>, &#123;</span><br><span class="line">	<span class="built_in">__newindex</span> = <span class="function"><span class="keyword">function</span> <span class="params">(t, n, v)</span></span></span><br><span class="line">		<span class="built_in">error</span>(<span class="string">"attempt to write to undeclared variable "</span> .. n, <span class="number">2</span>)</span><br><span class="line">	<span class="keyword">end</span>,</span><br><span class="line">	<span class="built_in">__index</span> = <span class="function"><span class="keyword">function</span> <span class="params">(_, n)</span></span></span><br><span class="line">		<span class="built_in">error</span>(<span class="string">"attemp to read undeclared variable "</span> .. n, <span class="number">2</span>)</span><br><span class="line">	<span class="keyword">end</span>,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">print</span>(a) <span class="comment">--&gt; stdin:1: attempt to read undeclared variable a</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>用<code>rawset()</code>声明新变量，<code>initval or false</code>是为了使新的全局变量总会得到一个不同与nil的值：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">declare</span><span class="params">(name, initval)</span></span></span><br><span class="line">	<span class="built_in">rawset</span>(<span class="built_in">_G</span>, name, initval <span class="keyword">or</span> <span class="literal">false</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<p>用debug库限制新的全局变量的声明只能在main chunk中，<code>debug.getinfo(2, &quot;S&quot;)</code>返回一个table，其<code>what</code>域说明metamethd调用是在main chunk、普通Lua函数和C函数其中之一<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">__newindex</span> = <span class="function"><span class="keyword">function</span> <span class="params">(t, n, v)</span></span></span><br><span class="line">	<span class="keyword">local</span> w = <span class="built_in">debug</span>.<span class="built_in">getinfo</span>(<span class="number">2</span>, <span class="string">"S"</span>).what</span><br><span class="line">	<span class="keyword">if</span> w ~= <span class="string">"main"</span> <span class="keyword">and</span> w ~= <span class="string">"C"</span> <span class="keyword">then</span></span><br><span class="line">		<span class="built_in">error</span>(<span class="string">"attemp to write to undeclared variable "</span> .. n, <span class="number">2</span>)</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="built_in">rawset</span>(t, n, v)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">a = <span class="number">1</span></span><br><span class="line"><span class="built_in">print</span>(a) <span class="comment">--&gt; 1</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">b</span><span class="params">()</span></span></span><br><span class="line">	c = <span class="number">2</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">b() <span class="comment">--&gt; stdin:1: attemp to write to undeclared variable c</span></span><br></pre></td></tr></table></figure></p>
+<p>判断一个变量是否存在，不能通过与nil比较，因为<code>__index</code>会报错，取而代之，我们可以用<code>rawget()</code><br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">rawget</span>(<span class="built_in">_G</span>, var) == <span class="literal">nil</span> <span class="keyword">then</span></span><br><span class="line">	<span class="comment">-- 'var' is undeclared</span></span><br><span class="line">	...</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<p>为了使声明为nil的变量不被Lua认为是未声明的，可以用一个table保存声明的变量的名字，每次调用metamethod时都检查一下变量是否在该table中<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> declaredNames = &#123;&#125;</span><br><span class="line"><span class="built_in">setmetatable</span>(<span class="built_in">_G</span>, &#123;</span><br><span class="line">	<span class="built_in">__newindex</span> = <span class="function"><span class="keyword">function</span> <span class="params">(t, n, v)</span></span></span><br><span class="line">		<span class="keyword">if</span> <span class="keyword">not</span> declaredNames[n] <span class="keyword">then</span></span><br><span class="line">			<span class="keyword">local</span> w = <span class="built_in">debug</span>.<span class="built_in">getinfo</span>(<span class="number">2</span>, <span class="string">"S"</span>).what</span><br><span class="line">			<span class="keyword">if</span> w ~= <span class="string">"main"</span> <span class="keyword">and</span> w ~= <span class="string">"C"</span> <span class="keyword">then</span></span><br><span class="line">				<span class="built_in">error</span>(<span class="string">"attempt to write to undeclared variable "</span> .. n, <span class="number">2</span>)</span><br><span class="line">			<span class="keyword">end</span></span><br><span class="line">			declaredNames[n] = <span class="literal">true</span></span><br><span class="line">		<span class="keyword">end</span></span><br><span class="line">		<span class="built_in">rawset</span>(t, n, v) <span class="comment">-- do the actual set</span></span><br><span class="line">	<span class="keyword">end</span>,</span><br><span class="line">	<span class="built_in">__index</span> = <span class="function"><span class="keyword">function</span> <span class="params">(_, n)</span></span></span><br><span class="line">		<span class="keyword">if</span> <span class="keyword">not</span> declaredNames[n] <span class="keyword">then</span></span><br><span class="line">			<span class="built_in">error</span>(<span class="string">"attempt to read undeclared variable "</span> .. n, <span class="number">2</span>)</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">		<span class="keyword">end</span></span><br><span class="line">	<span class="keyword">end</span>,</span><br><span class="line">&#125;)</span><br><span class="line">a = <span class="literal">nil</span></span><br><span class="line"><span class="built_in">print</span>(a) <span class="comment">--&gt; nil</span></span><br><span class="line"><span class="built_in">print</span>(b) <span class="comment">--&gt; stdin:1 attempt to read undeclared variable b</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p>非全局环境，所谓非全局环境，就是指之前所说的全局环境并非真正的全局环境，是Lua实现的伪全局环境，是为了操作全局变量更方便。</p>
+</li>
+<li><p>free name是并非绑定在一个特定声明的名字，即并非出现在有这些名字的局部变量所在的域（可以简单理解为全局变量的名字），例如<code>var1 = var2 + 3</code>这个chunk里的<code>var1</code>和<code>var2</code>就是free name，Lua会将该chunk编译为：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="built_in">_ENV</span> = &lt;some code&gt;</span><br><span class="line"><span class="keyword">return</span> funtion (...)</span><br><span class="line">	<span class="built_in">_ENV</span>.var1 = <span class="built_in">_ENV</span>.var2 + <span class="number">3</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>也就是说Lua会把chunk编译在一个预定义的upvalue<code>_ENV</code>的域中。<code>load()</code>则会把<code>_ENV</code>初始化global environment<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="built_in">_ENV</span> = &lt;the global environment&gt;</span><br><span class="line"><span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">(...)</span></span></span><br><span class="line">	<span class="built_in">_ENV</span>.var1 = <span class="built_in">_ENV</span>.var2 + <span class="number">3</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p>总结一下Lua处理全局变量的方式：</p>
+<ul>
+<li>将任何chunk编译在一个upvalue<code>_ENV</code>的域中</li>
+<li>将任何free name<code>var</code>变为<code>_ENV.var</code>（简单来说，就是<code>_ENV</code>只会记录全局变量，而不记录局部变量）</li>
+<li><code>load()</code>和<code>loadfile()</code>将一个chunk的第一个upvalue初始化为global environment</li>
+</ul>
+</li>
+<li><p>通过<code>_ENV = nil</code>阻止在之后的chunk中获取全局变量，可以用来控制代码可以使用什么变量</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="built_in">print</span>, <span class="built_in">sin</span> = <span class="built_in">print</span>, <span class="built_in">math</span>.<span class="built_in">sin</span></span><br><span class="line"><span class="built_in">_ENV</span> = <span class="literal">nil</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">13</span>) <span class="comment">--&gt; 13</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">sin</span>(<span class="number">13</span>)) <span class="comment">--&gt; 0.42016703682664</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">math</span>.<span class="built_in">cos</span>(<span class="number">13</span>)) <span class="comment">-- eror!</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用<code>_ENV</code>绕过局部变量</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">13</span> <span class="comment">-- global</span></span><br><span class="line"><span class="keyword">local</span> a = <span class="number">12</span></span><br><span class="line"><span class="built_in">print</span>(a) <span class="comment">--&gt; 12 (local)</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">_ENV</span>.a) <span class="comment">--&gt; 13 (global)</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用<code>_ENV</code>改变环境</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- change current environment to a new empty table</span></span><br><span class="line"><span class="built_in">_ENV</span> = &#123;&#125;</span><br><span class="line">a = <span class="number">1</span> <span class="comment">-- create a field in _ENV</span></span><br><span class="line"><span class="built_in">print</span>(a) <span class="comment">--&gt; stdin:4: attempt to call global 'print' (a nil value)</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>用旧环境填充新环境：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">15</span> <span class="comment">-- create a global variable</span></span><br><span class="line"><span class="built_in">_ENV</span> = &#123;g = <span class="built_in">_G</span>&#125; <span class="comment">-- change current environment</span></span><br><span class="line">a = <span class="number">1</span> <span class="comment">-- create a field in _ENV</span></span><br><span class="line">g.<span class="built_in">print</span>(a) <span class="comment">--&gt; 1</span></span><br><span class="line">g.<span class="built_in">print</span>(g.a) <span class="comment">--&gt; 15</span></span><br></pre></td></tr></table></figure></p>
+<p>用<code>_G</code>代替<code>g</code>：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">15</span> <span class="comment">-- create a global variable</span></span><br><span class="line"><span class="built_in">_ENV</span> = &#123;<span class="built_in">_G</span> = <span class="built_in">_G</span>&#125; <span class="comment">-- change current environment</span></span><br><span class="line">a = <span class="number">1</span> <span class="comment">-- create a field in _ENV</span></span><br><span class="line"><span class="built_in">_G</span>.<span class="built_in">print</span>(a) <span class="comment">--&gt; 1</span></span><br><span class="line"><span class="built_in">_G</span>.<span class="built_in">print</span>(<span class="built_in">_G</span>.a) <span class="comment">--&gt; 15</span></span><br></pre></td></tr></table></figure></p>
+<p>用继承来填充新环境：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br><span class="line"><span class="keyword">local</span> newgt = &#123;&#125; <span class="comment">-- create new environment</span></span><br><span class="line"><span class="built_in">setmetatable</span>(newgt, &#123;<span class="built_in">__index</span> = <span class="built_in">_G</span>&#125;)</span><br><span class="line"><span class="built_in">_ENV</span> = newgt <span class="comment">-- set it</span></span><br><span class="line"><span class="built_in">print</span>(a) <span class="comment">--&gt; 1</span></span><br></pre></td></tr></table></figure></p>
+<p>这里只设置了<code>__index</code>，所以任何赋值操作都发生在新环境中，所以错误地改变了全局环境的一个变量没有危险，仍可以通过<code>_G</code>来活取原值<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- continuing previous code</span></span><br><span class="line">a = <span class="number">10</span></span><br><span class="line"><span class="built_in">print</span>(a) <span class="comment">--&gt; 10</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">_G</span>.a) <span class="comment">--&gt; 1</span></span><br><span class="line"><span class="built_in">_G</span>.a = <span class="number">20</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">_G</span>.a) <span class="comment">--&gt; 20</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p><code>_ENV</code>符合通常的域规则，一个chunk中的函数可以像获取其他外部变量那样活取<code>_ENV</code></p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">_ENV</span> = &#123;<span class="built_in">_G</span> = <span class="built_in">_G</span>&#125;</span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span></span></span><br><span class="line">	<span class="built_in">_G</span>.<span class="built_in">print</span>(a) <span class="comment">-- compiled as '_ENV._G.print(_ENV.a)'</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">a = <span class="number">10</span> <span class="comment">-- _ENV.a</span></span><br><span class="line">foo() <span class="comment">--&gt; 10</span></span><br><span class="line"><span class="built_in">_ENV</span> = &#123;<span class="built_in">_G</span> = <span class="built_in">_G</span>, a = <span class="number">20</span>&#125;</span><br><span class="line">foo() <span class="comment">--&gt; 20</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用局部的<code>_ENV</code>生成一个局部环境：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">2</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">	<span class="keyword">local</span> <span class="built_in">_ENV</span> = &#123;<span class="built_in">print</span> = <span class="built_in">print</span>, a = <span class="number">14</span>&#125;</span><br><span class="line">	<span class="built_in">print</span>(a) <span class="comment">--&gt; 14</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="built_in">print</span>(a) <span class="comment">--&gt; 2 (back to the original _ENV)</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定义一个有私有环境的函数：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">factory</span><span class="params">(_ENV)</span></span></span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span></span></span><br><span class="line">		<span class="keyword">return</span> a <span class="comment">-- "global" a</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">f1 = factory&#123;a = <span class="number">6</span>&#125;</span><br><span class="line">f2 = factory&#123;a = <span class="number">7</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(f1()) <span class="comment">--&gt; 6</span></span><br><span class="line"><span class="built_in">print</span>(f2()) <span class="comment">--&gt; 7</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这里<code>factory()</code>返回一个闭包，其upvalue为<code>_ENV</code>。用这种方法可以让一些函数共享一个公共的环境，或者让一个函数专门用于改变这些函数共享的这个环境</p>
+<ul>
+<li><p><code>load()</code>的可选的第四个参数用来设定<code>_ENV</code>的值，<code>loadfile()</code>则为第三个参数</p>
+</li>
+<li><p>使用配置文件：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- file 'config.lua'</span></span><br><span class="line">width = <span class="number">200</span></span><br><span class="line">height = <span class="number">300</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>可用一下代码加载：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">env = &#123;&#125;</span><br><span class="line">f = <span class="built_in">loadfile</span>(<span class="string">"config.lua"</span>, <span class="string">"t"</span>, env)</span><br><span class="line">f() <span class="comment">-- only after executing will env be populated</span></span><br></pre></td></tr></table></figure></p>
+<p>配置文件中的代码会运行在一个空环境中，并且所有配置都会存储在该环境中，对其他代码无影响，有一定安全性</p>
+<ul>
+<li><p><code>load()</code>和<code>loadfile()</code>返回的函数可多次调用，为了使每次调用时的环境不同，可用以下两种方法：</p>
+</li>
+<li><p>法一：<code>debug.setupvalue()</code>可以改变一个函数的任何upvalue</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f = <span class="built_in">loadfile</span>(filename)</span><br><span class="line">...</span><br><span class="line">env = &#123;&#125;</span><br><span class="line"><span class="built_in">debug</span>.<span class="built_in">setupvalue</span>(f, <span class="number">1</span>, env)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><code>debug.setupvalue()</code>的第一个参数是一个函数，第二个参数是upvalue索引，第三个参数是新的upvalue，此处第二个参数总为1，因为Lua保证<code>load()</code>和<code>loadfile()</code>返回的函数只有一个upvalue，即<code>_ENV</code>。此法破坏了Lua的可见性规则：一个局部变量不能被外部获取</p>
+<ul>
+<li>法二：用可变参数，用<code>Exercise 8.1</code>的<code>loadwithprefix()</code>在加载的chunk之前加上<code>local _ENV = ...;</code><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f = loadwithprefix(<span class="string">"local _ENV = ...;"</span>, <span class="built_in">io</span>.<span class="built_in">lines</span>(filename, <span class="string">"*L"</span>))</span><br><span class="line">...</span><br><span class="line">env = &#123;&#125;</span><br><span class="line">f(env)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Lua/" rel="tag"># Lua</a>
+          
+            <a href="/tags/笔记/" rel="tag"># 笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-13-Metatables-and-Metamethods/" rel="next" title="Programming in Lua(Thrid Edition)笔记---13 Metatables and Metamethods">
+                <i class="fa fa-chevron-left"></i> Programming in Lua(Thrid Edition)笔记---13 Metatables and Metamethods
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-15-Modules-and-Packages/" rel="prev" title="Programming in Lua(Thrid Edition)笔记---15 Modules and Packages">
+                Programming in Lua(Thrid Edition)笔记---15 Modules and Packages <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Lin Hsu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">Artikel</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">Tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#14-The-Environment"><span class="nav-number">1.</span> <span class="nav-text">14 The Environment</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lin Hsu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

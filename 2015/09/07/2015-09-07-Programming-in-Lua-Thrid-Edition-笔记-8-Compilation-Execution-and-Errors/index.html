@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Lua,笔记," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="8 Compilation, Execution, and Errors">
+<meta name="keywords" content="Lua,笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Programming in Lua(Thrid Edition)笔记---8 Compilation, Execution, and Errors">
+<meta property="og:url" content="http://chaosink.github.io/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-8-Compilation-Execution-and-Errors/index.html">
+<meta property="og:site_name" content="Lin&#39;s Blog">
+<meta property="og:description" content="8 Compilation, Execution, and Errors">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2015-09-21T11:16:36.255Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Programming in Lua(Thrid Edition)笔记---8 Compilation, Execution, and Errors">
+<meta name="twitter:description" content="8 Compilation, Execution, and Errors">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chaosink.github.io/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-8-Compilation-Execution-and-Errors/"/>
+
+
+
+
+
+  <title>Programming in Lua(Thrid Edition)笔记---8 Compilation, Execution, and Errors | Lin's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lin's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chaosink.github.io/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-8-Compilation-Execution-and-Errors/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lin Hsu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Programming in Lua(Thrid Edition)笔记---8 Compilation, Execution, and Errors</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-09-07T16:59:20+08:00">
+                2015-09-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="8-Compilation-Execution-and-Errors"><a href="#8-Compilation-Execution-and-Errors" class="headerlink" title="8 Compilation, Execution, and Errors"></a>8 Compilation, Execution, and Errors</h3><a id="more"></a>
+<ul>
+<li><code>dofile()</code>实现：<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dofile</span><span class="params">(filename)</span></span></span><br><span class="line">	<span class="keyword">local</span> f = <span class="built_in">assert</span>(<span class="built_in">loadfile</span>(filename))</span><br><span class="line">	<span class="keyword">return</span> f()</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>可简单一些：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dofile</span><span class="params">(filename)</span></span></span><br><span class="line">	<span class="built_in">assert</span>(<span class="built_in">loadfile</span>(filename))()</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<p><code>loadfile()</code>只编译不运行，将编译好的chunk以函数返回，在runtime中执行此函数后才可以使用chunk中的代码,因为Lua中的函数定义是赋值；<code>loadfile()</code>遇到错误时返回错误码代码而不提出错误<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- file 'foo.lua'</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">(x)</span></span></span><br><span class="line">	<span class="built_in">print</span>(x)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f = <span class="built_in">loadfile</span>(<span class="string">"foo.lua"</span>) <span class="comment">-- 'foo.lua' defines function foo()</span></span><br><span class="line"><span class="built_in">print</span>(foo) <span class="comment">--&gt; nil</span></span><br><span class="line">f()        <span class="comment">-- defines 'foo'</span></span><br><span class="line">foo(<span class="string">"ok"</span>)  <span class="comment">--&gt; ok</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>load()从字符串中读取chunk<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f = <span class="built_in">load</span>(<span class="string">"i = i + 1"</span>)</span><br><span class="line">i = <span class="number">0</span></span><br><span class="line">f(); <span class="built_in">print</span>(i) <span class="comment">--&gt; 1</span></span><br><span class="line">f(); <span class="built_in">print</span>(i) <span class="comment">--&gt; 2</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>简单版：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">assert</span>(<span class="built_in">load</span>(s))()</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p><code>f = function () i = i + 1 end</code>比<code>f = load(&quot;i = i +　1&quot;)</code>快，更常用；<code>load()</code>编译chunk时是在全局环境中</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">i = <span class="number">32</span></span><br><span class="line"><span class="keyword">local</span> i = <span class="number">0</span></span><br><span class="line">f = <span class="built_in">load</span>(<span class="string">"i = i + 1; print(i)"</span>)</span><br><span class="line">g = <span class="function"><span class="keyword">function</span> <span class="params">()</span></span> i = i + <span class="number">1</span>; <span class="built_in">print</span>(i) <span class="keyword">end</span></span><br><span class="line">f() <span class="comment">--&gt; 33</span></span><br><span class="line">g() <span class="comment">--&gt; 1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>load()</code>可以用来对表达式字符串求值：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span> <span class="string">"enter your expression"</span></span><br><span class="line"><span class="keyword">local</span> l = <span class="built_in">io</span>.<span class="built_in">read</span>()</span><br><span class="line"><span class="keyword">local</span> func = <span class="built_in">assert</span>(<span class="built_in">load</span>(<span class="string">"return "</span> .. l))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"the value of your expression is "</span> .. func())</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>也可以多次调用返回的函数，使其作用于全局变量上<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span> <span class="string">"enter function to be plotted (with variable 'x'):"</span></span><br><span class="line"><span class="keyword">local</span> l = <span class="built_in">io</span>.<span class="built_in">read</span>()</span><br><span class="line"><span class="keyword">local</span> f = <span class="built_in">assert</span>(<span class="built_in">load</span>(<span class="string">"return "</span> .. l))</span><br><span class="line"><span class="keyword">for</span> i = <span class="number">1</span>, <span class="number">20</span> <span class="keyword">do</span></span><br><span class="line">	x = i <span class="comment">-- global 'x' (to be visible from the chunk)</span></span><br><span class="line">	<span class="built_in">print</span>(<span class="built_in">string</span>.<span class="built_in">rep</span>(<span class="string">"*"</span>, f()))</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><code>load()</code>的第一个参数可以为一个读函数，<code>load()</code>连续调用该读函数直到其返回nil<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f = <span class="built_in">load</span>(<span class="built_in">io</span>.<span class="built_in">lines</span>(filename, <span class="string">"*L"</span>))</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><code>io.lines(filename.&quot;*L&quot;)</code>返回一个函数，该函数每次被调用时都会返回文件的新的一行<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f = <span class="built_in">load</span>(<span class="built_in">io</span>.<span class="built_in">lines</span>(filename, <span class="number">1024</span>))</span><br></pre></td></tr></table></figure></p>
+<p><code>io.lines(filename, 1024)</code>返回1024 bytes的块</p>
+<ul>
+<li><p>Lua将任何独立的chunk看做一个可变参数的匿名函数的函数体，<code>load(&quot;a = 1&quot;)</code>相当于<code>function (...) a = 1 end</code></p>
+</li>
+<li><p><code>load()</code>中的chunk可以有局部变量</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f = <span class="built_in">load</span>(<span class="string">"load a = 10; print(a + 20)"</span>)</span><br><span class="line">f() <span class="comment">--&gt; 30</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>避免<code>load()</code>中的chunk使用全局变量</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span> <span class="string">"enter function to be plotted (with variable 'x'):"</span></span><br><span class="line"><span class="keyword">local</span> l = <span class="built_in">io</span>.<span class="built_in">read</span>()</span><br><span class="line"><span class="keyword">local</span> f = <span class="built_in">assert</span>(<span class="built_in">load</span>(<span class="string">"local x = ...; return "</span> .. l))</span><br><span class="line"><span class="keyword">for</span> i = <span class="number">1</span>, <span class="number">20</span> <span class="keyword">do</span></span><br><span class="line">	<span class="built_in">print</span>(<span class="built_in">string</span>.<span class="built_in">rep</span>(<span class="string">"*"</span>, f(i)))</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>load()</code>不会提出错误，遇到错误时，其只返回nil和错误信息</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">load</span>(<span class="string">"i i"</span>)) <span class="comment">--&gt; nil	[string "i i"]:1: syntax error near 'i'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可以用<code>luac</code>产生预编译Lua源代码，<code>lua</code>可以执行预编译文件，<code>loadfile()</code>和<code>load()</code>也接受预编译文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> luac -o prog.lc prog.lua</span><br><span class="line"><span class="meta">$</span> lua prog.lc</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>luac</code>的实现：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">p = <span class="built_in">loadfile</span>(<span class="built_in">arg</span>[<span class="number">1</span>])</span><br><span class="line">f = <span class="built_in">io</span>.<span class="built_in">open</span>(<span class="built_in">arg</span>[<span class="number">2</span>], <span class="string">"wb"</span>)</span><br><span class="line">f:<span class="built_in">write</span>(<span class="built_in">string</span>.<span class="built_in">dump</span>(p))</span><br><span class="line">f:<span class="built_in">close</span>()</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><code>string.dump()</code>接受一个Lua函数，返回其预编译代码，该代码可以被Lua重新载入</p>
+<ul>
+<li><p><code>load()</code>的第二个参数是chunk的名字，只用在错误信息中</p>
+</li>
+<li><p><code>load()</code>的第三个参数控制加载何种chunk，参数是一个字符串，<code>&quot;t&quot;</code>表示textual chunks，<code>&quot;b&quot;</code>表示binary chunks，<code>&quot;bt&quot;</code>表示两者均可，该参数可以防止运行恶意binary chunks</p>
+</li>
+<li><p><code>load()</code>的第四个参数是一个环境</p>
+</li>
+<li><p>预编译形式源代码不一定比原始源代码短，但加载得块</p>
+</li>
+<li><p><code>loadlib()</code>加载库并将Lua与其链接起来，该函数并不调用库中的函数，只是将C函数返回为Lua函数，出错时返回nil和错误信息</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">path</span> = <span class="string">"/usr/local/lib/lua/5.1/socket.so"</span></span><br><span class="line">f = <span class="built_in">package</span>.<span class="built_in">loadlib</span>(<span class="built_in">path</span>, <span class="string">"luaopen_socket"</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加载C函数库，用<code>require()</code>更方便，其会搜索函数库并用<code>loadlib()</code>加载链接，返回包含库中函数的table</p>
+</li>
+<li><p><code>error()</code>可以明确提出一个错误，参数为一条错误信息</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span> <span class="string">"enter a number"</span></span><br><span class="line">n = <span class="built_in">io</span>.<span class="built_in">read</span>(<span class="string">"*n"</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> n <span class="keyword">then</span> <span class="built_in">error</span>(<span class="string">"invalid input"</span>) <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>用<code>assert()</code>简化<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span> <span class="string">"enter a number"</span></span><br><span class="line">n = <span class="built_in">assert</span>(<span class="built_in">io</span>.<span class="built_in">read</span>(<span class="string">"*n"</span>), <span class="string">"invalid input"</span>)</span><br></pre></td></tr></table></figure></p>
+<p>当第一个参数为非false时返回之，否则返回第二个可选的参数，错误信息</p>
+<ul>
+<li><p><code>tonumber()</code>常用来检测参数是否为数字或者是否可以转换为数字</p>
+</li>
+<li><p>文件打开的错误处理</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> file, msg</span><br><span class="line"><span class="keyword">repeat</span></span><br><span class="line">	<span class="built_in">print</span> <span class="string">"enter a file name:"</span></span><br><span class="line">	<span class="keyword">local</span> name = <span class="built_in">io</span>.<span class="built_in">read</span>()</span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> name <span class="keyword">then</span> <span class="keyword">return</span> <span class="keyword">end</span> <span class="comment">-- no input</span></span><br><span class="line">	file, msg = <span class="built_in">io</span>.<span class="built_in">open</span>(name, <span class="string">"r"</span>）</span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> file <span class="keyword">then</span> <span class="built_in">print</span>(msg) <span class="keyword">end</span></span><br><span class="line"><span class="keyword">until</span> file</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>错误处理和异常，用<code>pcall()</code>执行函数</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> ok, msg = <span class="built_in">pcall</span>(<span class="function"><span class="keyword">function</span> <span class="params">()</span></span></span><br><span class="line">	&lt;some code&gt;</span><br><span class="line">	<span class="keyword">if</span> unexpected_condition <span class="keyword">then</span> <span class="built_in">error</span>() <span class="keyword">end</span></span><br><span class="line">	&lt;some code&gt;</span><br><span class="line">	<span class="built_in">print</span>(a[i]) <span class="comment">-- potential error: 'a' may not be a table</span></span><br><span class="line">	&lt;some code&gt;</span><br><span class="line"><span class="keyword">end</span>)</span><br><span class="line"><span class="keyword">if</span> ok <span class="keyword">then</span>      <span class="comment">-- no errors while running protected code</span></span><br><span class="line">	&lt;regular code&gt;</span><br><span class="line"><span class="keyword">else</span>            <span class="comment">-- protected code raised an error: take appropriate action</span></span><br><span class="line">	&lt;<span class="built_in">error</span>-handling code&gt;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>如果无错误，则<code>pcall()</code>返回true和执行的函数的返回值，如果有错误，则返回false和错误信息，错误信息为Lua自动生成的错误信息(索引非table变量)或执行的函数中的<code>error()</code>的参数，该参数可以为任何类型<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="built_in">status</span>， err = <span class="built_in">pcall</span>（<span class="function"><span class="keyword">function</span> <span class="params">()</span></span> <span class="built_in">error</span>(&#123;code = <span class="number">121</span>&#125;) <span class="keyword">end</span>)</span><br><span class="line"><span class="built_in">print</span>(err.code) <span class="comment">--&gt; 121</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><code>error()</code>的第二个参数level可用来指定错误的来源<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">(str)</span></span></span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">type</span>(str) ~= <span class="string">"string"</span> <span class="keyword">then</span></span><br><span class="line">		<span class="built_in">error</span>(<span class="string">"string expected"</span>, <span class="number">1</span>)</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	&lt;regular code&gt;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">foo(&#123;x = <span class="number">1</span>&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>以上为<code>level.lua</code>，用<code>lua</code>执行后错误信息如下：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">lua: hello.lua:<span class="number">3</span>: <span class="built_in">string</span> expected</span><br><span class="line">stack <span class="built_in">traceback</span>:</span><br><span class="line">	[C]: <span class="keyword">in</span> <span class="function"><span class="keyword">function</span> '<span class="title">error</span>'</span></span><br><span class="line"><span class="function">	<span class="title">hello.lua</span>:3: <span class="title">in</span> <span class="title">function</span> '<span class="title">foo</span>'</span></span><br><span class="line"><span class="function">	<span class="title">hello.lua</span>:7: <span class="title">in</span> <span class="title">main</span> <span class="title">chunk</span></span></span><br><span class="line"><span class="function">	[<span class="title">C</span>]: <span class="title">in</span> ?</span></span><br></pre></td></tr></table></figure></p>
+<p>将<code>error()</code>的第二个参数level改为2后错误信息如下：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">lua: hello.lua:<span class="number">7</span>: <span class="built_in">string</span> expected</span><br><span class="line">stack <span class="built_in">traceback</span>:</span><br><span class="line">	[C]: <span class="keyword">in</span> <span class="function"><span class="keyword">function</span> '<span class="title">error</span>'</span></span><br><span class="line"><span class="function">	<span class="title">hello.lua</span>:3: <span class="title">in</span> <span class="title">function</span> '<span class="title">foo</span>'</span></span><br><span class="line"><span class="function">	<span class="title">hello.lua</span>:7: <span class="title">in</span> <span class="title">main</span> <span class="title">chunk</span></span></span><br><span class="line"><span class="function">	[<span class="title">C</span>]: <span class="title">in</span> ?</span></span><br></pre></td></tr></table></figure></p>
+<p>错误信息<code>string expected</code>之前的代码行数表明不同的错误来源</p>
+<ul>
+<li><code>pcall()</code>在遇到错误时会摧毁从它到错误点的栈，为了跟踪错误，可以用<code>xpcall()</code>，其第一个参数是待跟踪的函数，第二个参数是一个消息处理函数，遇到错误时，在释放栈之前，Lua会调用此消息处理函数，从而可以用debug library搜集错误的任何额外信息</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Lua/" rel="tag"># Lua</a>
+          
+            <a href="/tags/笔记/" rel="tag"># 笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-7-Iterators-and-the-Generic-for/" rel="next" title="Programming in Lua(Thrid Edition)笔记---7 Iterators and the Generic for">
+                <i class="fa fa-chevron-left"></i> Programming in Lua(Thrid Edition)笔记---7 Iterators and the Generic for
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-9-Coroutines/" rel="prev" title="Programming in Lua(Thrid Edition)笔记---9 Coroutines">
+                Programming in Lua(Thrid Edition)笔记---9 Coroutines <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Lin Hsu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">Artikel</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">Tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-Compilation-Execution-and-Errors"><span class="nav-number">1.</span> <span class="nav-text">8 Compilation, Execution, and Errors</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lin Hsu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

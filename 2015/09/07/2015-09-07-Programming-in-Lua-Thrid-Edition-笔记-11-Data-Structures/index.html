@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Lua,笔记," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="11 Data Structures">
+<meta name="keywords" content="Lua,笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Programming in Lua(Thrid Edition)笔记---11 Data Structures">
+<meta property="og:url" content="http://chaosink.github.io/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-11-Data-Structures/index.html">
+<meta property="og:site_name" content="Lin&#39;s Blog">
+<meta property="og:description" content="11 Data Structures">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2015-09-18T11:46:04.850Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Programming in Lua(Thrid Edition)笔记---11 Data Structures">
+<meta name="twitter:description" content="11 Data Structures">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chaosink.github.io/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-11-Data-Structures/"/>
+
+
+
+
+
+  <title>Programming in Lua(Thrid Edition)笔记---11 Data Structures | Lin's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lin's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chaosink.github.io/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-11-Data-Structures/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lin Hsu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Programming in Lua(Thrid Edition)笔记---11 Data Structures</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-09-07T16:59:54+08:00">
+                2015-09-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="11-Data-Structures"><a href="#11-Data-Structures" class="headerlink" title="11 Data Structures"></a>11 Data Structures</h3><a id="more"></a>
+<ul>
+<li><p>取长度运算符’#’从1算起</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = &#123;&#125;</span><br><span class="line"><span class="keyword">for</span> i = <span class="number">-5</span>, <span class="number">5</span> <span class="keyword">do</span></span><br><span class="line">	a[i] = <span class="number">0</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="built_in">print</span>(#a) <span class="comment">--&gt; 5</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>矩阵实现：1、table的table，<code>mt[i][j] = 0</code>；2、一维table，<code>mt[(i - 1 * M) + j] = 0</code>或者<code>mt[s .. &quot;:&quot; .. t] = 0</code></p>
+</li>
+<li><p>链表</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">list = <span class="literal">nil</span></span><br><span class="line">list = &#123;<span class="built_in">next</span> = list, value = v&#125;</span><br><span class="line"><span class="keyword">local</span> l = list</span><br><span class="line"><span class="keyword">while</span> l <span class="keyword">do</span></span><br><span class="line">	&lt;visit l.value&gt;</span><br><span class="line">	l = l.<span class="built_in">next</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>队列，只能操作头尾元素</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">List = &#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">List.new</span><span class="params">()</span></span></span><br><span class="line">	<span class="keyword">return</span> &#123;fist = <span class="number">0</span>, last = <span class="number">-1</span>&#125;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">List.pushfirst</span><span class="params">(list, value)</span></span></span><br><span class="line">	<span class="keyword">local</span> first = list.first - <span class="number">1</span></span><br><span class="line">	list.first = first</span><br><span class="line">	list[first] = value</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">List.pushlast</span><span class="params">(list, value)</span></span></span><br><span class="line">	<span class="keyword">local</span> last = list.last + <span class="number">1</span></span><br><span class="line">	list.last = last</span><br><span class="line">	list[last] = value</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">List.popfirst</span><span class="params">(list)</span></span></span><br><span class="line">	<span class="keyword">local</span> first = list.first</span><br><span class="line">	<span class="keyword">if</span> first &gt; list.last <span class="keyword">then</span> <span class="built_in">error</span>(<span class="string">"list is empty"</span>) <span class="keyword">end</span></span><br><span class="line">	<span class="keyword">local</span> value = list[first]</span><br><span class="line">	list[first] = <span class="literal">nil</span> <span class="comment">-- to allow garbage collection</span></span><br><span class="line">	list.first = first + <span class="number">1</span></span><br><span class="line">	<span class="keyword">return</span> value</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">List.poplast</span><span class="params">(list)</span></span></span><br><span class="line">	<span class="keyword">local</span> last = list.last</span><br><span class="line">	<span class="keyword">if</span> list.first &gt; last <span class="keyword">then</span> <span class="built_in">error</span>(<span class="string">"list is empty"</span>) <span class="keyword">end</span></span><br><span class="line">	<span class="keyword">local</span> value = list[last]</span><br><span class="line">	list[last] = <span class="literal">nil</span> <span class="comment">-- to allow garbage collection</span></span><br><span class="line">	list.last = last - <span class="number">1</span></span><br><span class="line">	<span class="keyword">return</span> value</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>集合</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Set</span><span class="params">(list)</span></span></span><br><span class="line">	<span class="keyword">local</span> set = &#123;&#125;</span><br><span class="line">	<span class="keyword">for</span> _, l <span class="keyword">in</span> <span class="built_in">ipairs</span>(list) <span class="keyword">do</span> set[l] = <span class="literal">true</span> <span class="keyword">end</span></span><br><span class="line">	<span class="keyword">return</span> set</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">reserved = Set&#123;<span class="string">"while"</span>, <span class="string">"end"</span>, <span class="string">"function"</span>, <span class="string">"local"</span>,&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>bag(multiset)，多重集合</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">insert</span><span class="params">(bag, element)</span></span></span><br><span class="line">	bag[element] = (bag[element] <span class="keyword">or</span> <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">remove</span><span class="params">(bag, element)</span></span></span><br><span class="line">	<span class="keyword">local</span> count = bag[element]</span><br><span class="line">	bag[element] = (count <span class="keyword">and</span> count &gt; <span class="number">1</span>) <span class="keyword">and</span> count - <span class="number">1</span> <span class="keyword">or</span> <span class="literal">nil</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>字符串缓冲区，对于大量读入数据，由于用<code>..</code>连接字符串都需要新建一个字符串然后拷贝，所以以下代码不可取，会大大浪费时间和空间</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> buff = <span class="string">""</span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> <span class="built_in">io</span>.<span class="built_in">lines</span>() <span class="keyword">do</span></span><br><span class="line">	buff = buff .. line .. <span class="string">"\n"</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>读入整个文件：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">io</span>.<span class="built_in">read</span>(<span class="string">"*a"</span>)</span><br></pre></td></tr></table></figure></p>
+<p>用<code>table.concat()</code>连接一个table的字符串：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> t = &#123;&#125;</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> <span class="built_in">io</span>.<span class="built_in">lines</span>() <span class="keyword">do</span></span><br><span class="line">	t[#t + <span class="number">1</span>] = line .. <span class="string">"\n"</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">local</span> s = <span class="built_in">table</span>.<span class="built_in">concat</span>(t, <span class="string">"\n"</span>) .. <span class="string">"\n"</span></span><br></pre></td></tr></table></figure></p>
+<p><code>table.concat()</code>第二个参数为字符串之间的分隔符，最后一个<code>..</code>仍会将字符串复制一份，优化：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">t[#t + <span class="number">1</span>] = <span class="string">""</span></span><br><span class="line">s = <span class="built_in">table</span>.<span class="built_in">concat</span>(t, <span class="string">"\n"</span>)</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>图，节点与节点名之间的映射：<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">name2node</span><span class="params">(graph, name)</span></span></span><br><span class="line">	<span class="keyword">local</span> node = graph[name]</span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> node <span class="keyword">then</span></span><br><span class="line">		<span class="comment">-- node does not exist; create a new one</span></span><br><span class="line">		node = &#123;name = name, adj = &#123;&#125;&#125;</span><br><span class="line">		graph[name] = node</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="keyword">return</span> node</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>从文件读入一个图：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readgraph</span><span class="params">()</span></span></span><br><span class="line">	<span class="keyword">local</span> graph = &#123;&#125;</span><br><span class="line">	<span class="keyword">for</span> line <span class="keyword">in</span> <span class="built_in">io</span>.<span class="built_in">lines</span>() <span class="keyword">do</span></span><br><span class="line">		<span class="comment">-- split line in two names</span></span><br><span class="line">		<span class="keyword">local</span> namefrom, nameto = <span class="built_in">string</span>.<span class="built_in">match</span>(line, <span class="string">"(%S+)%s+(%S+)"</span>)</span><br><span class="line">		<span class="comment">-- find corresponding nodes</span></span><br><span class="line">		<span class="keyword">local</span> from = name2node(graph, namefrom)</span><br><span class="line">		<span class="keyword">local</span> to = name2node(graph, nameto)</span><br><span class="line">		<span class="comment">-- adds 'to' to the adjacent set of 'from'</span></span><br><span class="line">		from.adj[to] = <span class="literal">true</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="keyword">return</span> graph</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<p>找两节点之间的路径：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">findpath</span><span class="params">(curr, to, path, visited)</span></span></span><br><span class="line">	<span class="built_in">path</span> = <span class="built_in">path</span> <span class="keyword">or</span> &#123;&#125;</span><br><span class="line">	visited = visited <span class="keyword">or</span> &#123;&#125;</span><br><span class="line">	<span class="keyword">if</span> visited[curr] <span class="keyword">then</span>  <span class="comment">-- node already visited</span></span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>         <span class="comment">-- no path here</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	visited[curr] = <span class="literal">true</span>   <span class="comment">-- mark node as visited</span></span><br><span class="line">	<span class="built_in">path</span>[#<span class="built_in">path</span> + <span class="number">1</span>] = curr <span class="comment">-- add it to path</span></span><br><span class="line">	<span class="keyword">if</span> curr == to <span class="keyword">then</span>     <span class="comment">-- final node?</span></span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">path</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="comment">-- try all adjacent nodes</span></span><br><span class="line">	<span class="keyword">for</span> node <span class="keyword">in</span> <span class="built_in">pairs</span>(curr.adj) <span class="keyword">do</span></span><br><span class="line">		<span class="keyword">local</span> p = findpath(node, to, <span class="built_in">path</span>, visited)</span><br><span class="line">		<span class="keyword">if</span> p <span class="keyword">then</span> <span class="keyword">return</span> p <span class="keyword">end</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="built_in">path</span>[#<span class="built_in">path</span>] = <span class="literal">nil</span>      <span class="comment">-- remove node from path</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Lua/" rel="tag"># Lua</a>
+          
+            <a href="/tags/笔记/" rel="tag"># 笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-10-Complete-Examples/" rel="next" title="Programming in Lua(Thrid Edition)笔记---10 Complete Examples">
+                <i class="fa fa-chevron-left"></i> Programming in Lua(Thrid Edition)笔记---10 Complete Examples
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-12-Data-Files-and-Persistence/" rel="prev" title="Programming in Lua(Thrid Edition)笔记---12 Data Files and Persistence">
+                Programming in Lua(Thrid Edition)笔记---12 Data Files and Persistence <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Lin Hsu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">Artikel</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">Tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#11-Data-Structures"><span class="nav-number">1.</span> <span class="nav-text">11 Data Structures</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lin Hsu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

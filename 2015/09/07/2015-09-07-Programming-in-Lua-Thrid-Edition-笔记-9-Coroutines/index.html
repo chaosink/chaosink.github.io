@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Lua,笔记," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="9 Coroutines">
+<meta name="keywords" content="Lua,笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Programming in Lua(Thrid Edition)笔记---9 Coroutines">
+<meta property="og:url" content="http://chaosink.github.io/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-9-Coroutines/index.html">
+<meta property="og:site_name" content="Lin&#39;s Blog">
+<meta property="og:description" content="9 Coroutines">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2015-09-10T08:16:10.244Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Programming in Lua(Thrid Edition)笔记---9 Coroutines">
+<meta name="twitter:description" content="9 Coroutines">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chaosink.github.io/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-9-Coroutines/"/>
+
+
+
+
+
+  <title>Programming in Lua(Thrid Edition)笔记---9 Coroutines | Lin's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lin's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chaosink.github.io/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-9-Coroutines/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lin Hsu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Programming in Lua(Thrid Edition)笔记---9 Coroutines</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-09-07T16:59:30+08:00">
+                2015-09-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="9-Coroutines"><a href="#9-Coroutines" class="headerlink" title="9 Coroutines"></a>9 Coroutines</h3><a id="more"></a>
+<ul>
+<li>协程和线程的相同点：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">It is a line of execution, with its own stack, its own local variables, and its own instruction pointer; but it shares global variables and mostly anything else with other coroutines.</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>不同点：线程是并行的，而协程是合作式的，任何时候只会有一个协程运行，并且只有在其明确要求挂起时才会挂起</p>
+<ul>
+<li>协程可用<code>yield()</code>暂时挂起，等待后续resume<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">co = coroutine.<span class="built_in">create</span>(<span class="function"><span class="keyword">function</span> <span class="params">()</span></span></span><br><span class="line">	<span class="keyword">for</span> i = <span class="number">1</span>, <span class="number">10</span> <span class="keyword">do</span></span><br><span class="line">		<span class="built_in">print</span>(<span class="string">"co"</span>, i)</span><br><span class="line">		coroutine.<span class="built_in">yield</span>()</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span>)</span><br><span class="line">coroutine.<span class="built_in">resume</span>(co) <span class="comment">--&gt; co	1</span></span><br><span class="line">coroutine.<span class="built_in">resume</span>(co) <span class="comment">--&gt; co	2</span></span><br><span class="line">...</span><br><span class="line">coroutine.<span class="built_in">resume</span>(co) <span class="comment">--&gt; co	10</span></span><br><span class="line">coroutine.<span class="built_in">resume</span>(co) <span class="comment">-- print nothig</span></span><br><span class="line"><span class="built_in">print</span>(coroutine.<span class="built_in">resume</span>(co)) <span class="comment">--&gt; false cannot resume dead coroutine</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>协程挂起期间的活动相当于发生在调用<code>yield()</code>之中，resume后<code>yield()</code>返回并继续运行</p>
+<ul>
+<li><p>协程运行在保护模式下，如果有错误发生Lua不会展示错误信息，而是返回给<code>resume()</code></p>
+</li>
+<li><p>协程A中resume协程B，则协程A处于normal状态</p>
+</li>
+<li><p>resume-yeild对可以交换数据，<code>resume()</code>返回传给<code>yield()</code>的任何参数，<code>yield()</code>返回传递给<code>resume()</code>的任何额外参数，协程结束时任何主函数的返回值将返回给<code>resume()</code></p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">co = coroutine.<span class="built_in">create</span>(<span class="function"><span class="keyword">function</span> <span class="params">(a, b)</span></span></span><br><span class="line">	coroutine.<span class="built_in">yield</span>(a + b, a - b)</span><br><span class="line"><span class="keyword">end</span>)</span><br><span class="line"><span class="built_in">print</span>(coroutine.<span class="built_in">resume</span>(co, <span class="number">20</span>, <span class="number">10</span>)) <span class="comment">--&gt; true	30	10</span></span><br><span class="line">co = coroutine.<span class="built_in">create</span>(<span class="function"><span class="keyword">function</span> <span class="params">(x)</span></span></span><br><span class="line">	<span class="built_in">print</span>(<span class="string">"co1"</span>, x)</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">"co2"</span>, coroutine.<span class="built_in">yield</span>())</span><br><span class="line"><span class="keyword">end</span>)</span><br><span class="line">coroutine.<span class="built_in">resume</span>(co, <span class="string">"hi"</span>) <span class="comment">--&gt; co1	hi</span></span><br><span class="line">coroutine.<span class="built_in">resume</span>(co, <span class="number">4</span>, <span class="number">5</span>) <span class="comment">--&gt; co2	4	5</span></span><br><span class="line">co = coroutine.<span class="built_in">create</span>(<span class="function"><span class="keyword">function</span> <span class="params">()</span></span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">6</span>, <span class="number">7</span></span><br><span class="line"><span class="keyword">end</span>)</span><br><span class="line"><span class="built_in">print</span>(coroutine.<span class="built_in">resume</span>(co)) <span class="comment">--&gt; true	6	7</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>pipes and filters</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">receive</span><span class="params">(prod)</span></span></span><br><span class="line">	<span class="keyword">local</span> <span class="built_in">status</span>, value = coroutine.<span class="built_in">resume</span>(prod)</span><br><span class="line">	<span class="keyword">return</span> value</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">send</span><span class="params">(x)</span></span></span><br><span class="line">	coroutine.<span class="built_in">yield</span>(x)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">producer</span><span class="params">()</span></span></span><br><span class="line">	<span class="keyword">return</span> coroutine.<span class="built_in">create</span>(<span class="function"><span class="keyword">function</span> <span class="params">()</span></span></span><br><span class="line">		<span class="keyword">while</span> <span class="literal">true</span> <span class="keyword">do</span></span><br><span class="line">			<span class="keyword">local</span> x = <span class="built_in">io</span>.<span class="built_in">read</span>()   <span class="comment">-- produce new value</span></span><br><span class="line">			send(x)</span><br><span class="line">		<span class="keyword">end</span></span><br><span class="line">	<span class="keyword">end</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filter</span><span class="params">(prod)</span></span></span><br><span class="line">	<span class="keyword">return</span> coroutine.<span class="built_in">create</span>(<span class="function"><span class="keyword">function</span> <span class="params">()</span></span></span><br><span class="line">		<span class="keyword">for</span> line = <span class="number">1</span>, <span class="built_in">math</span>.<span class="built_in">huge</span> <span class="keyword">do</span></span><br><span class="line">			<span class="keyword">local</span> x =receive(prod) <span class="comment">-- get new value</span></span><br><span class="line">			x = <span class="built_in">string</span>.<span class="built_in">format</span>(<span class="string">"%5d %s"</span>, line, x)</span><br><span class="line">			send(x)                <span class="comment">-- send it to consumer</span></span><br><span class="line">		<span class="keyword">end</span></span><br><span class="line">	<span class="keyword">end</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">consumer</span><span class="params">(prod)</span></span></span><br><span class="line">	<span class="keyword">while</span> <span class="literal">true</span> <span class="keyword">do</span></span><br><span class="line">		<span class="keyword">local</span> x = receive(prod)    <span class="comment">-- get new value</span></span><br><span class="line">		<span class="built_in">io</span>.<span class="built_in">write</span>(x, <span class="string">"\n"</span>)          <span class="comment">-- consume new value</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">consumer(filter(producer()))</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>该例基于consumer-driven</p>
+<ul>
+<li>协程用作迭代器<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">permgen</span><span class="params">(a, n)</span></span></span><br><span class="line">	n = n <span class="keyword">or</span> #a    <span class="comment">-- default for 'n' is size of 'a'</span></span><br><span class="line">	<span class="keyword">if</span> n &lt;= <span class="number">1</span> <span class="keyword">then</span> <span class="comment">-- nothing to change?</span></span><br><span class="line">		coroutine.<span class="built_in">yield</span>(a)</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="keyword">for</span> i = <span class="number">1</span>, n <span class="keyword">do</span></span><br><span class="line">			<span class="comment">-- put i-th element as the last one</span></span><br><span class="line">			a[n], a[i] = a[i], a[n]</span><br><span class="line">			<span class="comment">-- generate all permutations of the other elements</span></span><br><span class="line">			permgen(a, n - <span class="number">1</span>)</span><br><span class="line">			<span class="comment">-- restore i-th element</span></span><br><span class="line">			a[n], a[i] = a[i], a[n]</span><br><span class="line">		<span class="keyword">end</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">printResult</span><span class="params">(a)</span></span></span><br><span class="line">	<span class="keyword">for</span> i = <span class="number">1</span>, #a <span class="keyword">do</span></span><br><span class="line">		<span class="built_in">io</span>.<span class="built_in">write</span>(a[i], <span class="string">" "</span>)</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="built_in">io</span>.<span class="built_in">write</span>(<span class="string">"\n"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">permutations</span><span class="params">(a)</span></span></span><br><span class="line">	<span class="keyword">local</span> co = coroutine.<span class="built_in">create</span>(<span class="function"><span class="keyword">function</span> <span class="params">()</span></span> permgen(a) <span class="keyword">end</span>)</span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span></span>  <span class="comment">-- iterator</span></span><br><span class="line">		<span class="keyword">local</span> code, res = coroutine.<span class="built_in">resume</span>(co)</span><br><span class="line">		<span class="keyword">return</span> res</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">for</span> p <span class="keyword">in</span> permutations&#123;<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>&#125; <span class="keyword">do</span></span><br><span class="line">	printResult(p)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><code>permutations()</code>的模式在Lua中十分常用，所以用<code>coroutine.wrap()</code>简化，其返回一个可以resume协程的函数，遇错误时提出，不返回错误码，但是不能检查协程的状态和运行时错误<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">permutations</span><span class="params">(a)</span></span></span><br><span class="line">	<span class="keyword">return</span> coroutine.<span class="built_in">wrap</span>(<span class="function"><span class="keyword">function</span> <span class="params">()</span></span> permgen(a) <span class="keyword">end</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>用协程实现非阻塞<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> socket = <span class="built_in">require</span> <span class="string">"socket"</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">download</span><span class="params">(host, file)</span></span></span><br><span class="line">	<span class="keyword">local</span> c = <span class="built_in">assert</span>(socket.connect(host, <span class="number">80</span>))</span><br><span class="line">	<span class="keyword">local</span> count = <span class="number">0</span> <span class="comment">-- counts number of bytes read</span></span><br><span class="line">	c:send(<span class="string">"GET "</span> .. file .. <span class="string">" HTTP/1.0\r\n\r\n"</span>)</span><br><span class="line">	<span class="keyword">while</span> <span class="literal">true</span> <span class="keyword">do</span></span><br><span class="line">		<span class="keyword">local</span> s, <span class="built_in">status</span> = receive(c)</span><br><span class="line">		count = count + #s</span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">status</span> == <span class="string">"closed"</span> <span class="keyword">then</span> <span class="keyword">break</span> <span class="keyword">end</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	c:<span class="built_in">close</span>()</span><br><span class="line">	<span class="built_in">print</span>(file, count)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">receive</span><span class="params">(connection)</span></span></span><br><span class="line">	connection:settimeout(<span class="number">0</span>) <span class="comment">-- do not block</span></span><br><span class="line">	<span class="keyword">local</span> s, <span class="built_in">status</span>, partial = connection:receive(<span class="number">2</span> ^ <span class="number">10</span>)</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">status</span> == <span class="string">"timeout"</span> <span class="keyword">then</span></span><br><span class="line">		coroutine.<span class="built_in">yield</span>(connection)</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="keyword">return</span> s <span class="keyword">or</span> partial, <span class="built_in">status</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get</span><span class="params">(host, file)</span></span></span><br><span class="line">	<span class="comment">-- create coroutine</span></span><br><span class="line">	<span class="keyword">local</span> co = coroutine.<span class="built_in">create</span>(<span class="function"><span class="keyword">function</span> <span class="params">()</span></span></span><br><span class="line">		download(host, file)</span><br><span class="line">	<span class="keyword">end</span>)</span><br><span class="line">	<span class="comment">-- insert it in the list</span></span><br><span class="line">	<span class="built_in">table</span>.<span class="built_in">insert</span>(threads, co)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dispatch</span><span class="params">()</span></span></span><br><span class="line">	<span class="keyword">local</span> i = <span class="number">1</span></span><br><span class="line">	<span class="keyword">while</span> <span class="literal">true</span> <span class="keyword">do</span></span><br><span class="line">		<span class="keyword">if</span> threads[i] == <span class="literal">nil</span> <span class="keyword">then</span> <span class="comment">-- no more threads?</span></span><br><span class="line">			<span class="keyword">if</span> threads[<span class="number">1</span>] == <span class="literal">nil</span> <span class="keyword">then</span> <span class="keyword">break</span> <span class="keyword">end</span> <span class="comment">-- list is empty?</span></span><br><span class="line">			i = <span class="number">1</span> <span class="comment">-- restart the loop</span></span><br><span class="line">		<span class="keyword">end</span></span><br><span class="line">		<span class="keyword">local</span> <span class="built_in">status</span>, res = coroutine.<span class="built_in">resume</span>(threads[i])</span><br><span class="line">		<span class="keyword">if</span> <span class="keyword">not</span> res <span class="keyword">then</span> <span class="comment">-- thread finished its task?</span></span><br><span class="line">			<span class="built_in">table</span>.<span class="built_in">remove</span>(threads, i)</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			i = i + <span class="number">1</span> <span class="comment">-- go to next thread</span></span><br><span class="line">		<span class="keyword">end</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">host = <span class="string">"www.w3.org"</span></span><br><span class="line">file1 = <span class="string">"/TR/REC-html32.html"</span></span><br><span class="line">file2 = <span class="string">"/TR/html401/html40.txt"</span></span><br><span class="line">file3 = <span class="string">"/TR/2002/REC-xhtml-20020801/xhtml1.pdf"</span></span><br><span class="line">file4 = <span class="string">"/TR/2000/REC-DOM-Level-2-Core-20001113/DOM2-Core.txt"</span></span><br><span class="line">threads = &#123;&#125; <span class="comment">-- list of all live threads</span></span><br><span class="line">get(host, file1)</span><br><span class="line">get(host, file2)</span><br><span class="line">get(host, file3)</span><br><span class="line">get(host, file4)</span><br><span class="line">dispatch()</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>将各协程存储在table中，调度程序管理协程的执行，如果一个协程发生了阻塞则调用下一个协程，循环下去直到各协程任务都完成（table中没有协程）。但是当每个协程都阻塞时，CPU仍在不停轮询，可用<code>socket.select()</code>优化<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dispatch</span><span class="params">()</span></span></span><br><span class="line">	<span class="keyword">local</span> i = <span class="number">1</span></span><br><span class="line">	<span class="keyword">local</span> timedout = &#123;&#125;</span><br><span class="line">	<span class="keyword">while</span> <span class="literal">true</span> <span class="keyword">do</span></span><br><span class="line">		<span class="keyword">if</span> threads[i] == <span class="literal">nil</span> <span class="keyword">then</span> <span class="comment">-- no more threads</span></span><br><span class="line">			<span class="keyword">if</span> threads[<span class="number">1</span>] == <span class="literal">nil</span> <span class="keyword">then</span> <span class="keyword">break</span> <span class="keyword">end</span></span><br><span class="line">			i = <span class="number">1</span> <span class="comment">-- restart the loop</span></span><br><span class="line">			timedout = &#123;&#125;</span><br><span class="line">		<span class="keyword">end</span></span><br><span class="line">		<span class="keyword">local</span> <span class="built_in">status</span>, res = coroutine.<span class="built_in">resume</span>(threads[i])</span><br><span class="line">		<span class="keyword">if</span> <span class="keyword">not</span> res <span class="keyword">then</span> <span class="comment">-- thread finished its task?</span></span><br><span class="line">			<span class="built_in">table</span>.<span class="built_in">remove</span>(threads, i)</span><br><span class="line">		<span class="keyword">else</span> <span class="comment">-- time out</span></span><br><span class="line">			i = i + <span class="number">1</span></span><br><span class="line">			timedout[#timedout + <span class="number">1</span>] = res</span><br><span class="line">			<span class="keyword">if</span> #timedout == #threads <span class="keyword">then</span> <span class="comment">-- all threads blocked?</span></span><br><span class="line">				socket.<span class="built_in">select</span>(timedout)</span><br><span class="line">			<span class="keyword">end</span></span><br><span class="line">		<span class="keyword">end</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<p><code>timedout</code>是一个table，存储各阻塞的协程，如果其大小与<code>threads</code>大小相等，则说明所有协程均阻塞，这时即可将<code>timedout</code>传给<code>socket.select()</code>来监视各协程的变化，若有一个协程不再阻塞，则可继续任务的执行</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Lua/" rel="tag"># Lua</a>
+          
+            <a href="/tags/笔记/" rel="tag"># 笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-8-Compilation-Execution-and-Errors/" rel="next" title="Programming in Lua(Thrid Edition)笔记---8 Compilation, Execution, and Errors">
+                <i class="fa fa-chevron-left"></i> Programming in Lua(Thrid Edition)笔记---8 Compilation, Execution, and Errors
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-10-Complete-Examples/" rel="prev" title="Programming in Lua(Thrid Edition)笔记---10 Complete Examples">
+                Programming in Lua(Thrid Edition)笔记---10 Complete Examples <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Lin Hsu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">Artikel</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">Tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-Coroutines"><span class="nav-number">1.</span> <span class="nav-text">9 Coroutines</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lin Hsu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

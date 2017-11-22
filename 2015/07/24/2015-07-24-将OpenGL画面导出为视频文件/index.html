@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OpenGL,video processing," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="想着这个东西以后应该还会用到，所以就整理一下，供以后参考。">
+<meta name="keywords" content="OpenGL,video processing">
+<meta property="og:type" content="article">
+<meta property="og:title" content="将OpenGL画面导出为视频文件">
+<meta property="og:url" content="http://chaosink.github.io/2015/07/24/2015-07-24-将OpenGL画面导出为视频文件/index.html">
+<meta property="og:site_name" content="Lin&#39;s Blog">
+<meta property="og:description" content="想着这个东西以后应该还会用到，所以就整理一下，供以后参考。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2015-09-11T09:24:33.770Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="将OpenGL画面导出为视频文件">
+<meta name="twitter:description" content="想着这个东西以后应该还会用到，所以就整理一下，供以后参考。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chaosink.github.io/2015/07/24/2015-07-24-将OpenGL画面导出为视频文件/"/>
+
+
+
+
+
+  <title>将OpenGL画面导出为视频文件 | Lin's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lin's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chaosink.github.io/2015/07/24/2015-07-24-将OpenGL画面导出为视频文件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lin Hsu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">将OpenGL画面导出为视频文件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-07-24T22:45:04+08:00">
+                2015-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>想着这个东西以后应该还会用到，所以就整理一下，供以后参考。<br><a id="more"></a><br>先说一下大致的方法：</p>
+<p>先将帧缓冲区中RGB颜色数据读入到内存中，如果每个R、G、B都用<code>GLbyte</code>来存的话，一个点就是3byte，如果要取的区域比较大，FPS又较高，则数据量会很大，内存会很快耗费掉一大块，尽管如此，还是推荐在渲染过程中只把数据先读到内存中，等渲染结束后再全部输出到文件中，因为每一帧数据量过大时输出到文件的过程会较慢，可能会影响渲染过程，虽然理论上想应该不会影响，但是在我这确实出现了问题，视频处理后会出现丢帧的现象。输出的文件叫做<code>raw video</code>，体积大的吓人，所以我们需要对其编码压缩，需要的话还要加上声音，这就要用到神通广大的<code>ffmpeg</code>了。</p>
+<hr>
+<p>在说导出视频之前还需提一点：平滑fps。如果每帧的渲染任务量较小（大），则每帧的渲染时间就会较少（多），fps就会较大（小），但是视频的fps一般都不超过60，所以为了<code>ffmpeg</code>编码方便，我们需要控制渲染的fps，也就是raw video的fps，一般可选60，25，24，15等值，24是大多数电影的fps，也是人眼识别连贯图像的最低fps。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> time_current = glfwGetTime();</span><br><span class="line"><span class="keyword">double</span> time_accurate = frame_count / <span class="number">1.0</span> / fps;</span><br><span class="line"><span class="keyword">double</span> time_delta = time_accurate - time_current;</span><br><span class="line">time_delta = time_delta &gt; <span class="number">0</span> ? time_delta : <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span>(print) <span class="built_in">printf</span>(<span class="string">"frame_count:%d time_accurate:%lf time_current:%lf time_delta:%lf\n"</span>, frame_count, time_accurate, time_current, time_delta);</span><br><span class="line">usleep(time_delta * <span class="number">1000000</span>);</span><br></pre></td></tr></table></figure></p>
+<p>只需将以上代码加到每帧最后即可，通过挂起强制平滑fps，与实际时间保持同步。</p>
+<hr>
+<p>接下来说具体步骤：</p>
+<ol>
+<li><p>在渲染前先建立一个存储帧的数组<code>GLbyte *frame[MAX_FRAME]</code>和帧计数器<code>int frame_count = 0</code>；</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GLbyte *frame[MAX_FRAME];</span><br><span class="line"><span class="keyword">int</span> frame_count = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在渲染完每一帧后对<code>frame</code>中的指针<code>new</code>出一块固定大小的内存，该大小由要取的区域大小来定，然后用<code>glReadPixes()</code>将帧缓冲区中的RGB颜色数据读入到内存中。<code>glReadPixel()</code>用法见官方文档：<a href="https://www.opengl.org/sdk/docs/man3/xhtml/glReadPixels.xml" target="_blank" rel="noopener">glReadPixel()</a></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">frame[frame_count] = <span class="keyword">new</span> GLbyte[window_width * window_height * <span class="number">3</span>];</span><br><span class="line">glReadPixels(<span class="number">0</span>, <span class="number">0</span>, window_width, window_height, GL_RGB, GL_UNSIGNED_BYTE, frame[frame_count++]);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>我这里是读取了整个窗口帧缓冲区。</li>
+<li>网上说<code>glReadPixes()</code>读取的是当前显示的帧的缓冲区，即前帧缓冲区，如果要读取刚刚填充好的但并未显示的帧缓冲区，需先交换帧缓冲区。不过我感觉无所谓，读哪个都一样，所以直接在交换之前读了。我也试了交换之后读，感觉并无异样。</li>
+</ul>
+</li>
+<li><p>渲染过程结束后，将帧数组中的数据直接写入文件中即可，数据量太大，写入过程会很久。比如我渲染的一个30s的过程，FPS为32，帧缓冲区大小为1920x1080，输出的文件竟有6个G！也可直接算出来：1920x1080x3x32x30/(2^30)=5.56。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FILE *out = fopen(<span class="string">"raw_video"</span>, <span class="string">"wb"</span>);</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; frame_count; i++) fwrite(frame[i], window_width * window_height * <span class="number">3</span>, <span class="number">1</span>, out);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用<code>ffmpeg</code>编码压缩并加上声音</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -f rawvideo -pixel_format rgb24 -video_size 1920x1080 -framerate 32 -i raw_video -i sound.wav -strict -2 -vf "vflip" result.mp4</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>-f rawvideo</code>指定文件是raw video格式，即直接存储每一帧的全部点的数据；</li>
+<li><code>-pixel_format rgb24</code>指定点的格式是RGB格式，每个点24bit，也就是3byte；</li>
+<li><code>-video_size 1920x1080</code>指定视频小；</li>
+<li><code>-framerate 32</code>指定帧的速率FPS，即每秒的帧数；</li>
+<li><code>-i raw_video</code>指定输入文件为<code>raw_video</code>，也就是之前渲染的输出文件，文件名可任取；前面的四个选项都是针对此输入文件设定的；</li>
+<li><code>-i sound.wav</code>指定另一个输入文件<code>sound.wav</code>，也就是要加上的声音文件，如果想用其他格式，只需改变后缀名即可，只要<code>ffmpeg</code>支持；</li>
+<li><code>-strict -2</code>是为了开启处于试验阶段的<code>AAC</code>音频编码方式；（我的理解）</li>
+<li><code>-vf &quot;vflip&quot;</code>中的<code>-vf</code>表示视频过滤器，后面引号中的为过滤器内容，<code>vflip</code>表示将视频上下颠倒，因为用<code>glReadPixels()</code>读取的第一个点在区域中的左下角，而<code>ffmpeg</code>编码压缩的时候认为第一个点在左上角；</li>
+<li><code>result.mp4</code>为输出文件，如果想获得其他格式，只需改变后缀名即可，只要<code>ffmpeg</code>支持。</li>
+</ul>
+</li>
+</ol>
+<p>这样就可以得到一个经过编码压缩且有声音的视频文件了，如果不想加声音，去掉<code>-i sound.wav</code>即可。</p>
+<hr>
+<p>如果想要给编码压缩后的视频文件加上声音，可用如下命令：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i result.mp4 -i sound.wav -strict -2 result_with_sound.mp4</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>如果想要截取一段视频或音频，可用如下命令：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i input.mp4 -ss 1.5 -to 14.275 output.mp4</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><code>-ss 1.5</code>指定从1.5秒开始；</li>
+<li><code>-to 14.275</code>指定到14.275秒结束。</li>
+</ul>
+<hr>
+<p>之前写的可视化插件都是用这种方法做的视频，效果还不错。</p>
+<p><code>ffmpeg</code>功能过于强大，剪辑、合成、编码、解码等功能都能实现，一些复杂的功能则可以通过一些基础功能的组合来实现，所以学一点<code>ffmpeg</code>的使用还是很有必要的。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
+          
+            <a href="/tags/video-processing/" rel="tag"># video processing</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/07/24/2015-07-24-一个极其隐蔽而又坑爹的BUG/" rel="next" title="一个极其隐蔽而又坑爹的bug">
+                <i class="fa fa-chevron-left"></i> 一个极其隐蔽而又坑爹的bug
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/07/26/2015-07-26-将shadertoy上的WebGL移植到桌面OpenGL中/" rel="prev" title="将shadertoy上的WebGL移植到桌面OpenGL中">
+                将shadertoy上的WebGL移植到桌面OpenGL中 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Lin Hsu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">Artikel</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">Tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lin Hsu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

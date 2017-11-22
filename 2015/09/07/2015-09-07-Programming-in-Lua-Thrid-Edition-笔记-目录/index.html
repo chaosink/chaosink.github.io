@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Lua,笔记," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="看到第四章的时候，发现Lua的靓点好多，在编程中会提供很多便利，但是由于这些东西都是新的，刚开始学容易忘，回过头再去书里找又太麻烦，尤其是我看的电子书，所以才想到要记下来。这是我第一次写读书笔记，希望可以做完做好。">
+<meta name="keywords" content="Lua,笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Programming in Lua(Thrid Edition)笔记---目录">
+<meta property="og:url" content="http://chaosink.github.io/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-目录/index.html">
+<meta property="og:site_name" content="Lin&#39;s Blog">
+<meta property="og:description" content="看到第四章的时候，发现Lua的靓点好多，在编程中会提供很多便利，但是由于这些东西都是新的，刚开始学容易忘，回过头再去书里找又太麻烦，尤其是我看的电子书，所以才想到要记下来。这是我第一次写读书笔记，希望可以做完做好。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2015-09-09T14:57:02.111Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Programming in Lua(Thrid Edition)笔记---目录">
+<meta name="twitter:description" content="看到第四章的时候，发现Lua的靓点好多，在编程中会提供很多便利，但是由于这些东西都是新的，刚开始学容易忘，回过头再去书里找又太麻烦，尤其是我看的电子书，所以才想到要记下来。这是我第一次写读书笔记，希望可以做完做好。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chaosink.github.io/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-目录/"/>
+
+
+
+
+
+  <title>Programming in Lua(Thrid Edition)笔记---目录 | Lin's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lin's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chaosink.github.io/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-目录/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lin Hsu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Programming in Lua(Thrid Edition)笔记---目录</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-09-07T02:04:21+08:00">
+                2015-09-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>看到第四章的时候，发现Lua的靓点好多，在编程中会提供很多便利，但是由于这些东西都是新的，刚开始学容易忘，回过头再去书里找又太麻烦，尤其是我看的电子书，所以才想到要记下来。这是我第一次写读书笔记，希望可以做完做好。<br><a id="more"></a></p>
+<h2 id="Programming-in-Lua-Thrid-Edition"><a href="#Programming-in-Lua-Thrid-Edition" class="headerlink" title="Programming in Lua, Thrid Edition"></a>Programming in Lua, Thrid Edition</h2><h2 id="I-The-Language"><a href="#I-The-Language" class="headerlink" title="I The Language"></a>I The Language</h2><h3 id="1-Getting-Started"><a href="#1-Getting-Started" class="headerlink" title="1 Getting Started"></a>1 Getting Started</h3><h3 id="2-Types-and-Values"><a href="#2-Types-and-Values" class="headerlink" title="2 Types and Values"></a>2 Types and Values</h3><h3 id="3-Expressions"><a href="#3-Expressions" class="headerlink" title="3 Expressions"></a>3 Expressions</h3><h3 id="4-Statements"><a href="#4-Statements" class="headerlink" title="4 Statements"></a>4 Statements</h3><h3 id="5-Functions"><a href="#5-Functions" class="headerlink" title="5 Functions"></a>5 Functions</h3><h3 id="6-More-about-Functions"><a href="#6-More-about-Functions" class="headerlink" title="6 More about Functions"></a>6 More about Functions</h3><h3 id="7-Iterators-and-the-Generic-for"><a href="#7-Iterators-and-the-Generic-for" class="headerlink" title="7 Iterators and the Generic for"></a>7 Iterators and the Generic for</h3><h3 id="8-Compilation-Execution-and-Errors"><a href="#8-Compilation-Execution-and-Errors" class="headerlink" title="8 Compilation, Execution, and Errors"></a>8 Compilation, Execution, and Errors</h3><h3 id="9-Coroutines"><a href="#9-Coroutines" class="headerlink" title="9 Coroutines"></a>9 Coroutines</h3><h3 id="10-Coroutines"><a href="#10-Coroutines" class="headerlink" title="10 Coroutines"></a>10 Coroutines</h3><h2 id="II-Tables-and-Objects"><a href="#II-Tables-and-Objects" class="headerlink" title="II Tables and Objects"></a>II Tables and Objects</h2><h3 id="11-Data-Structures"><a href="#11-Data-Structures" class="headerlink" title="11 Data Structures"></a>11 Data Structures</h3><h3 id="12-Data-Files-and-Persistence"><a href="#12-Data-Files-and-Persistence" class="headerlink" title="12 Data Files and Persistence"></a>12 Data Files and Persistence</h3><h3 id="13-Metatables-and-Metamethods"><a href="#13-Metatables-and-Metamethods" class="headerlink" title="13 Metatables and Metamethods"></a>13 Metatables and Metamethods</h3><h3 id="14-The-Environment"><a href="#14-The-Environment" class="headerlink" title="14 The Environment"></a>14 The Environment</h3><h3 id="15-Modules-and-Packages"><a href="#15-Modules-and-Packages" class="headerlink" title="15 Modules and Packages"></a>15 Modules and Packages</h3><h3 id="16-Object-Oriented-Programming"><a href="#16-Object-Oriented-Programming" class="headerlink" title="16 Object-Oriented Programming"></a>16 Object-Oriented Programming</h3><h3 id="17-Weak-Tables-and-Finalizers"><a href="#17-Weak-Tables-and-Finalizers" class="headerlink" title="17 Weak Tables and Finalizers"></a>17 Weak Tables and Finalizers</h3><h2 id="III-The-Standard-Libraries"><a href="#III-The-Standard-Libraries" class="headerlink" title="III The Standard Libraries"></a>III The Standard Libraries</h2><h3 id="18-The-Mathematical-Library"><a href="#18-The-Mathematical-Library" class="headerlink" title="18 The Mathematical Library"></a>18 The Mathematical Library</h3><h3 id="19-The-Bitwise-Library"><a href="#19-The-Bitwise-Library" class="headerlink" title="19 The Bitwise Library"></a>19 The Bitwise Library</h3><h3 id="20-The-Table-Library"><a href="#20-The-Table-Library" class="headerlink" title="20 The Table Library"></a>20 The Table Library</h3><h3 id="21-The-String-Library"><a href="#21-The-String-Library" class="headerlink" title="21 The String Library"></a>21 The String Library</h3><h3 id="22-The-I-O-Library"><a href="#22-The-I-O-Library" class="headerlink" title="22 The I/O Library"></a>22 The I/O Library</h3><h3 id="23-The-Operating-System-Library"><a href="#23-The-Operating-System-Library" class="headerlink" title="23 The Operating System Library"></a>23 The Operating System Library</h3><h3 id="24-The-Debug-Library"><a href="#24-The-Debug-Library" class="headerlink" title="24 The Debug Library"></a>24 The Debug Library</h3><h2 id="IV-The-C-API"><a href="#IV-The-C-API" class="headerlink" title="IV The C API"></a>IV The C API</h2><h3 id="25-An-Overview-of-the-C-API"><a href="#25-An-Overview-of-the-C-API" class="headerlink" title="25 An Overview of the C API"></a>25 An Overview of the C API</h3><h3 id="26-Extending-Your-Application"><a href="#26-Extending-Your-Application" class="headerlink" title="26 Extending Your Application"></a>26 Extending Your Application</h3><h3 id="27-Calling-C-from-Lua"><a href="#27-Calling-C-from-Lua" class="headerlink" title="27 Calling C from Lua"></a>27 Calling C from Lua</h3><h3 id="28-Techniques-for-Writing-C-Functions"><a href="#28-Techniques-for-Writing-C-Functions" class="headerlink" title="28 Techniques for Writing C Functions"></a>28 Techniques for Writing C Functions</h3><h3 id="29-User-Defined-Types-in-C"><a href="#29-User-Defined-Types-in-C" class="headerlink" title="29 User-Defined Types in C"></a>29 User-Defined Types in C</h3><h3 id="30-Managing-Resources"><a href="#30-Managing-Resources" class="headerlink" title="30 Managing Resources"></a>30 Managing Resources</h3><h3 id="31-Threads-and-States"><a href="#31-Threads-and-States" class="headerlink" title="31 Threads and States"></a>31 Threads and States</h3><h3 id="32-Memory-Management"><a href="#32-Memory-Management" class="headerlink" title="32 Memory Management"></a>32 Memory Management</h3>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Lua/" rel="tag"># Lua</a>
+          
+            <a href="/tags/笔记/" rel="tag"># 笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/08/15/2015-08-15-glVertexAttribPointer-的stride参数/" rel="next" title="glVertexAttribPointer()的stride参数">
+                <i class="fa fa-chevron-left"></i> glVertexAttribPointer()的stride参数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-1-Getting-Started/" rel="prev" title="Programming in Lua(Thrid Edition)笔记---1 Getting Started">
+                Programming in Lua(Thrid Edition)笔记---1 Getting Started <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Lin Hsu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">Artikel</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">Tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Programming-in-Lua-Thrid-Edition"><span class="nav-number">1.</span> <span class="nav-text">Programming in Lua, Thrid Edition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#I-The-Language"><span class="nav-number">2.</span> <span class="nav-text">I The Language</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Getting-Started"><span class="nav-number">2.1.</span> <span class="nav-text">1 Getting Started</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Types-and-Values"><span class="nav-number">2.2.</span> <span class="nav-text">2 Types and Values</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Expressions"><span class="nav-number">2.3.</span> <span class="nav-text">3 Expressions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Statements"><span class="nav-number">2.4.</span> <span class="nav-text">4 Statements</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Functions"><span class="nav-number">2.5.</span> <span class="nav-text">5 Functions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-More-about-Functions"><span class="nav-number">2.6.</span> <span class="nav-text">6 More about Functions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-Iterators-and-the-Generic-for"><span class="nav-number">2.7.</span> <span class="nav-text">7 Iterators and the Generic for</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-Compilation-Execution-and-Errors"><span class="nav-number">2.8.</span> <span class="nav-text">8 Compilation, Execution, and Errors</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-Coroutines"><span class="nav-number">2.9.</span> <span class="nav-text">9 Coroutines</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-Coroutines"><span class="nav-number">2.10.</span> <span class="nav-text">10 Coroutines</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#II-Tables-and-Objects"><span class="nav-number">3.</span> <span class="nav-text">II Tables and Objects</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#11-Data-Structures"><span class="nav-number">3.1.</span> <span class="nav-text">11 Data Structures</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-Data-Files-and-Persistence"><span class="nav-number">3.2.</span> <span class="nav-text">12 Data Files and Persistence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-Metatables-and-Metamethods"><span class="nav-number">3.3.</span> <span class="nav-text">13 Metatables and Metamethods</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-The-Environment"><span class="nav-number">3.4.</span> <span class="nav-text">14 The Environment</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-Modules-and-Packages"><span class="nav-number">3.5.</span> <span class="nav-text">15 Modules and Packages</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-Object-Oriented-Programming"><span class="nav-number">3.6.</span> <span class="nav-text">16 Object-Oriented Programming</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-Weak-Tables-and-Finalizers"><span class="nav-number">3.7.</span> <span class="nav-text">17 Weak Tables and Finalizers</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#III-The-Standard-Libraries"><span class="nav-number">4.</span> <span class="nav-text">III The Standard Libraries</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#18-The-Mathematical-Library"><span class="nav-number">4.1.</span> <span class="nav-text">18 The Mathematical Library</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-The-Bitwise-Library"><span class="nav-number">4.2.</span> <span class="nav-text">19 The Bitwise Library</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#20-The-Table-Library"><span class="nav-number">4.3.</span> <span class="nav-text">20 The Table Library</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#21-The-String-Library"><span class="nav-number">4.4.</span> <span class="nav-text">21 The String Library</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-The-I-O-Library"><span class="nav-number">4.5.</span> <span class="nav-text">22 The I/O Library</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-The-Operating-System-Library"><span class="nav-number">4.6.</span> <span class="nav-text">23 The Operating System Library</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#24-The-Debug-Library"><span class="nav-number">4.7.</span> <span class="nav-text">24 The Debug Library</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IV-The-C-API"><span class="nav-number">5.</span> <span class="nav-text">IV The C API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#25-An-Overview-of-the-C-API"><span class="nav-number">5.1.</span> <span class="nav-text">25 An Overview of the C API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#26-Extending-Your-Application"><span class="nav-number">5.2.</span> <span class="nav-text">26 Extending Your Application</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#27-Calling-C-from-Lua"><span class="nav-number">5.3.</span> <span class="nav-text">27 Calling C from Lua</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#28-Techniques-for-Writing-C-Functions"><span class="nav-number">5.4.</span> <span class="nav-text">28 Techniques for Writing C Functions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#29-User-Defined-Types-in-C"><span class="nav-number">5.5.</span> <span class="nav-text">29 User-Defined Types in C</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#30-Managing-Resources"><span class="nav-number">5.6.</span> <span class="nav-text">30 Managing Resources</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#31-Threads-and-States"><span class="nav-number">5.7.</span> <span class="nav-text">31 Threads and States</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#32-Memory-Management"><span class="nav-number">5.8.</span> <span class="nav-text">32 Memory Management</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lin Hsu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Lua,笔记," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="15 Modules and Packages">
+<meta name="keywords" content="Lua,笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Programming in Lua(Thrid Edition)笔记---15 Modules and Packages">
+<meta property="og:url" content="http://chaosink.github.io/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-15-Modules-and-Packages/index.html">
+<meta property="og:site_name" content="Lin&#39;s Blog">
+<meta property="og:description" content="15 Modules and Packages">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2015-09-25T11:02:13.986Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Programming in Lua(Thrid Edition)笔记---15 Modules and Packages">
+<meta name="twitter:description" content="15 Modules and Packages">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chaosink.github.io/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-15-Modules-and-Packages/"/>
+
+
+
+
+
+  <title>Programming in Lua(Thrid Edition)笔记---15 Modules and Packages | Lin's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lin's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chaosink.github.io/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-15-Modules-and-Packages/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lin Hsu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Programming in Lua(Thrid Edition)笔记---15 Modules and Packages</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-09-07T17:00:26+08:00">
+                2015-09-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="15-Modules-and-Packages"><a href="#15-Modules-and-Packages" class="headerlink" title="15 Modules and Packages"></a>15 Modules and Packages</h3><a id="more"></a>
+<ul>
+<li>从用户的角度来看，一个module是一些可以用<code>require()</code>加载的代码（Lua或者C），它可以创造并返回一个table，module输出的一切，例如函数和常量，都定义在这个table中，相当与一个namespace。所有的标准库都是module，可以像下面这样来用数学库：<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> m = requre <span class="string">"math"</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">sin</span>(<span class="number">3.14</span>))</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>独立的解析器以类似于下面的方式预加载了所有的标准库：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">math</span> = <span class="built_in">require</span> <span class="string">"math"</span></span><br><span class="line"><span class="built_in">string</span> = <span class="built_in">require</span> <span class="string">"math"</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p>module的几种用法：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- usage 1</span></span><br><span class="line"><span class="keyword">local</span> <span class="built_in">mod</span> = rquire <span class="string">"mod"</span></span><br><span class="line"><span class="built_in">mod</span>.foo()</span><br><span class="line"><span class="comment">-- usage 2</span></span><br><span class="line"><span class="keyword">local</span> m = <span class="built_in">require</span> <span class="string">"mod"</span></span><br><span class="line">m.foo()</span><br><span class="line"><span class="comment">-- usage 3</span></span><br><span class="line"><span class="keyword">local</span> m = <span class="built_in">require</span> <span class="string">"mod"</span></span><br><span class="line"><span class="keyword">local</span> f = <span class="built_in">mod</span>.foo</span><br><span class="line">f()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>require</code>不能对加载的module传递参数，因为<code>requie</code>的一个目标是为了避免加载一个module多次（即运行module中的代码），一旦一个module被加载了，无论程序中哪一部分再次require它，它都会被重用，如果同一个module以不同参数调用，就可能产生冲突。可以在module内部实现初始参数的使用：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="built_in">mod</span> = <span class="built_in">require</span><span class="string">"mod"</span></span><br><span class="line"><span class="built_in">mod</span>.init(<span class="number">0</span>, <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>或者<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="built_in">mod</span> = <span class="built_in">require</span><span class="string">"mod"</span>.init(<span class="number">0</span>, <span class="number">0</span>)</span><br></pre></td></tr></table></figure></p>
+<p>如果module返回它的初始化函数，该函数返回module的table，则可用如下方式：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="built_in">mod</span> = <span class="built_in">require</span><span class="string">"mod"</span>(<span class="number">0</span>, <span class="number">0</span>)</span><br></pre></td></tr></table></figure></p>
+<p>这样一来就由module本身来处理不同参数引起的初始化冲突</p>
+<ul>
+<li><p><code>require</code>在加载一个模块时，会首先检查table<code>package.loaded</code>判断module是否已经加载，如果已加载，其他对该module的require则会直接返回table中的值，而不会再运行任何代码。如果module没被加载过，<code>require</code>有module名搜索一个Lua文件，如果找到就用<code>loadfile()</code>加载，结果是一个叫做loader的函数，当被调用时，加载module。如果<code>require</code>没有找到一个Lua文件，它会搜索一个C库，如果找到就用<code>package.loadlib()</code>加载，并寻找一个叫做<code>luaopen_modname()</code>的函数，这里loader及时<code>loadlib()</code>的结果，即一个用Lua函数表示的<code>luaopen_modname()</code>函数。<code>require</code>在获得一个loader之后，为了最终加载module，其用两个参数——module名和其获得loader的文件的名，调用loader（module通常会忽视参数），<code>require</code>将loader返回的值返回，并存储在<code>package.loaded</code>table中，如果loader没有返回值，<code>require</code>当做loader返回true来处理</p>
+</li>
+<li><p>如果要强制<code>require</code>多次加载同一个module，可以移除<code>package.loaded</code>table中相应的库的入口</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">package</span>.<span class="built_in">loaded</span>.&lt;modname&gt; = <span class="literal">nil</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重命名module，例如测试同一个module的不同版本。对于Lua文件，可以直接重命名文件，对于C库，由于Lua需要在其中寻找<code>luaopen_*()</code>函数，而如果该库为二进制文件，则无法修改该函数名。可以利用<code>require</code>的这一特点：如果module名中有连字符<code>-</code>，则<code>require</code>在寻找<code>luaopen_*()</code>会忽视连字符之前的内容（包括连字符），因为C不允许标识符中出现连字符，例如一个module名为<code>a-b</code>，则<code>require</code>会寻找名为<code>luaopen_b()</code>的函数</p>
+</li>
+<li><p>路径搜索，Lua用一个template列表来做路径，多个template之间用分号<code>;</code>相隔（分号很少用在文件名中），每个template中都含有问号<code>?</code>，<code>require</code>会将问号替换为module名，如果一个template路径中没有找到module，则继续搜索下一个template路径</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?:?.lua;c:\windows\?;/usr/<span class="keyword">local</span>/lua/?/?.lua</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>对于上面的路径，Lua会一次搜索<code>sql</code>，<code>sql.lua</code>，<code>c:\windows\sql</code>，<code>/usr/local/lua/sql/sql.lua</code></p>
+<ul>
+<li><p><code>require</code>搜索Lua文件的路径总是<code>package.path</code>的当前值，当Lua启动时，它会初始化该变量为环境变量<code>LUA_PATH_5_2</code>，如果该环境变量未定义，则用<code>LUA_PATH</code>，如果两者都未定义，则用编译时定义的默认路径（命令行选项<code>-E</code>强制使用编译时定义的默认路径而不是环境变量）。当用环境变量时，Lua会将双分号<code>;;</code>替换为默认路径，例如，如果设置<code>LUA_PATH_5_2</code>为<code>mydir/?.lua;;</code>，则最终的路径会是template<code>mydir/?.lua</code>加上默认路径。<code>require</code>搜索C库的路径则是<code>package.cpath</code>的值，其他均与搜索Lua文件相同</p>
+</li>
+<li><p><code>package.searchpath()</code>接受一个module名和一个路径，返回第一个存在的文件或nil加上一个描述所有其未成功打开的文件的错误信息</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="built_in">path</span> = <span class="string">".\\?.dll;C:\\Program Files\\Lua502\\dll\\?.dll"</span></span><br><span class="line">&gt; <span class="built_in">print</span>(<span class="built_in">package</span>.searchpath(<span class="string">"X"</span>, <span class="built_in">path</span>))</span><br><span class="line"><span class="literal">nil</span></span><br><span class="line"> no file <span class="string">'.\X.dll'</span></span><br><span class="line"> no file <span class="string">'C:\Program Files\Lua502\dll\X.dll'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>require</code>实际上是调用<code>package.searchers</code>table中的函数来搜索module，这些函数叫做<code>searcher</code>，接受module名，返回一个loader或nil，Lua依次调用该table中的函数直到其中之一返回一个loader，如果没有找到，<code>require</code>报错</p>
+</li>
+<li><p>可以自定义<code>package.searchers</code>table中的searcher来灵活处理module的调用，例如在zip文件中寻找module</p>
+</li>
+<li><p>默认情况下，<code>package.searchers</code>中有四个函数。第一个是<code>preload()</code>，用<code>package.preload</code>表来检测module是否已预加载，该表将module名映射为loader，用该searcher，可以将一个静态链接到Lua的C库的<code>luaopen_*()</code>函数在<code>preload</code>table中注册，这样一来当且仅当用户需要该module的时候其会被调用。第二个函数用来搜索Lua文件。第三个函数用来搜索C库。第四个函数与submodule相关。</p>
+</li>
+<li><p>创建一个module：创建一个table，把所有函数存储在该表中，返回该表。用<code>local</code>定义一个私有函数</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> M = &#123;&#125;</span><br><span class="line">...</span><br><span class="line">reutrn M</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>或者<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> M = &#123;&#125;</span><br><span class="line"><span class="built_in">package</span>.<span class="built_in">loaded</span>[...] = M</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p><code>require</code>在调用loader是将module名作为第一个参数，所以这里的<code>...</code>就是module名。如果一个module不返回值，则<code>require</code>会返回<code>package.loaded[modname]</code>（如果非nil，如果是nil则为true），这样就不用末尾<code>return</code></p>
+<ul>
+<li>复数module<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> M = &#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">M.new</span><span class="params">(r, i)</span></span> <span class="keyword">return</span> &#123;r = r, i = i&#125; <span class="keyword">end</span></span><br><span class="line"><span class="comment">-- defines constant 'i'</span></span><br><span class="line">M.i = M.new(<span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">M.add</span><span class="params">(c1, c2)</span></span></span><br><span class="line">	<span class="keyword">return</span> M.new(c1.r + c2.r, c1.i + c2.i)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">M.sub</span><span class="params">(c1, c2)</span></span></span><br><span class="line">	<span class="keyword">return</span> M.new(c1.r - c2.r, c1.i - c2.i)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">M.mul</span><span class="params">(c1, c2)</span></span></span><br><span class="line">	<span class="keyword">return</span> M.new(c1.r * c2.r - c1.i * c2.i, c1.r * c2.i + c1.i * c2.r)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">inv</span><span class="params">(c)</span></span></span><br><span class="line">	<span class="keyword">local</span> n = c.r ^ <span class="number">2</span> + c.i ^ <span class="number">2</span></span><br><span class="line">	<span class="keyword">return</span> M.new(c.r / n, -c.i / n)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">M.div</span><span class="params">(c1, c2)</span></span></span><br><span class="line">	<span class="keyword">return</span> M.mul(c1, inv(c2))</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">M.tostring</span><span class="params">(c)</span></span></span><br><span class="line">	<span class="keyword">return</span> <span class="string">"("</span> .. c.r <span class="string">","</span> .. c.i .. <span class="string">")"</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">return</span> M</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>所有函数声明为local，末尾构造表<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">new</span><span class="params">(r, i)</span></span> <span class="keyword">return</span> &#123;r = r, i = i&#125; <span class="keyword">end</span></span><br><span class="line"><span class="comment">-- defines constant 'i'</span></span><br><span class="line"><span class="keyword">local</span> i = new(<span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span><span class="params">(c1, c2)</span></span></span><br><span class="line">	<span class="keyword">return</span> M.new(c1.r + c2.r, c1.i + c2.i)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sub</span><span class="params">(c1, c2)</span></span></span><br><span class="line">	<span class="keyword">return</span> M.new(c1.r - c2.r, c1.i - c2.i)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mul</span><span class="params">(c1, c2)</span></span></span><br><span class="line">	<span class="keyword">return</span> M.new(c1.r * c2.r - c1.i * c2.i, c1.r * c2.i + c1.i * c2.r)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">inv</span><span class="params">(c)</span></span></span><br><span class="line">	<span class="keyword">local</span> n = c.r ^ <span class="number">2</span> + c.i ^ <span class="number">2</span></span><br><span class="line">	<span class="keyword">return</span> M.new(c.r / n, -c.i / n)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">div</span><span class="params">(c1, c2)</span></span></span><br><span class="line">	<span class="keyword">return</span> M.mul(c1, inv(c2))</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">tostring</span><span class="params">(c)</span></span></span><br><span class="line">	<span class="keyword">return</span> <span class="string">"("</span> .. c.r <span class="string">","</span> .. c.i .. <span class="string">")"</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">return</span> &#123;</span><br><span class="line">	new		= new,</span><br><span class="line">	i		= i,</span><br><span class="line">	add		= add,</span><br><span class="line">	<span class="built_in">sub</span>		= <span class="built_in">sub</span>,</span><br><span class="line">	mul		= mul,</span><br><span class="line">	div		= div,</span><br><span class="line">	<span class="built_in">tostring</span>= <span class="built_in">tostring</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用module：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> cpx = <span class="built_in">require</span> <span class="string">"complex"</span></span><br><span class="line"><span class="built_in">print</span>(cpx.<span class="built_in">tostring</span>(cpx.add(cpx.new(<span class="number">3</span>, <span class="number">4</span>), cpx.i)))</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p>为了防止忘记使用<code>local</code>而使module污染全局环境，可以为module创建一个环境，使得其中的函数和全局变量都存储在一个table中，而且可以不用为函数加前缀</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> M = &#123;&#125;</span><br><span class="line"><span class="built_in">_ENV</span> = M</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span><span class="params">(c1, c2)</span></span></span><br><span class="line">	<span class="keyword">return</span> new(c1.r + c2.r, c1.i + c2.i)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>为了防止忘记使用<code>local</code>而使module污染全局环境，可以将<code>_ENV</code>赋为nil，这样就可以使对一个全局名字赋值非法，但是这样就不能使用其他全局变量，解决方法：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> M = &#123;&#125;</span><br><span class="line"><span class="built_in">setmetatable</span>(M, &#123;<span class="built_in">__index</span> = <span class="built_in">_G</span>&#125;)</span><br><span class="line"><span class="built_in">_ENV</span> = M</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>为了减少使用metatable的消耗，可以用局部变量存储原来的环境：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> M = &#123;&#125;</span><br><span class="line"><span class="keyword">local</span> <span class="built_in">_G</span> = <span class="built_in">_G</span></span><br><span class="line"><span class="built_in">_ENV</span> = M <span class="comment">-- or _ENV = nil</span></span><br></pre></td></tr></table></figure></p>
+<p>也可以只把需要的函数声明为局部变量，较麻烦，但是依赖很清楚：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- module setup</span></span><br><span class="line"><span class="keyword">local</span> M = &#123;&#125;</span><br><span class="line"><span class="comment">-- Import Section:</span></span><br><span class="line"><span class="comment">-- declare everything this module needs from outside</span></span><br><span class="line"><span class="keyword">local</span> <span class="built_in">sqrt</span> = <span class="built_in">math</span>.<span class="built_in">sqrt</span></span><br><span class="line"><span class="keyword">local</span> <span class="built_in">io</span> = <span class="built_in">io</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>一个package是由module组成的树状结构，用<code>.</code>分级。当<code>require</code>搜索module时，其会将<code>.</code>转换为系统目录分隔符<code>/</code>（UNIX）或者<code>\</code>（Windows）（如果系统没有层级式目录，则会转换为<code>_</code>），对于如下路径：<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./?.lua;/usr/<span class="keyword">local</span>/lua/?.lua;/usr/<span class="keyword">local</span>/lua/?/init.lua</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><code>require</code>在搜索<code>a.b</code>module时会一次搜索以下文件：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./a/b.lua</span><br><span class="line">/usr/<span class="keyword">local</span>/lua/a/b.lua</span><br><span class="line">/uar/<span class="keyword">local</span>/lua/a/b/init.lua</span><br></pre></td></tr></table></figure></p>
+<p>这样一来一个package的所有module都会在同一个目录中</p>
+<ul>
+<li><p>C的函数名不能有<code>.</code>，所以在搜索C库中的<code>luaopen_*()</code>函数时，<code>.</code>会转换为<code>_</code>，例如名为<code>a.b</code>C库应将其初始化函数命名为<code>luaopen_a_b</code>。仍然可以使用<code>-</code>来重命名module，例如对于<code>require &quot;mod.v-a&quot;</code>，require会找到文件<code>mod/v-a</code>和函数<code>luaopen_a()</code></p>
+</li>
+<li><p><code>require</code>的第四个searcher就是用来搜索submodule的，如果前三个searcher都没有找到submodule，则第四个searcher就会继续以搜索C库的方式搜索，不过这次是先搜索package。例如<code>require a.b.c</code>，<code>require</code>会先搜索名为<code>a</code>的C库，然后在该库中搜索函数<code>luaopen_a_b_c()</code>。这样就可以把几个submodule都放在同一个C库中了，每个都有其自己的打开函数</p>
+</li>
+<li><p>相同package中submodule之间没有特定的关系，而package的实现者可以自行构造module之间的联系，例如一个module在开始时载入其submodule</p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Lua/" rel="tag"># Lua</a>
+          
+            <a href="/tags/笔记/" rel="tag"># 笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-14-The-Environment/" rel="next" title="Programming in Lua(Thrid Edition)笔记---14 The Environment">
+                <i class="fa fa-chevron-left"></i> Programming in Lua(Thrid Edition)笔记---14 The Environment
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/07/2015-09-07-Programming-in-Lua-Thrid-Edition-笔记-16-Object-Oriented-Programming/" rel="prev" title="Programming in Lua(Thrid Edition)笔记---16 Object-Oriented Programming">
+                Programming in Lua(Thrid Edition)笔记---16 Object-Oriented Programming <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Lin Hsu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">Artikel</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">Tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#15-Modules-and-Packages"><span class="nav-number">1.</span> <span class="nav-text">15 Modules and Packages</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lin Hsu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

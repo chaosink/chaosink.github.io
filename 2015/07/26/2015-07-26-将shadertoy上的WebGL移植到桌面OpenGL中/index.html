@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OpenGL,GLSL,WebGL," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="shadertoy上有许多着色器的炫酷示例，充分展现了着色器和可编程管线的强大之处。网站的名字起的很有意思，真的感觉上面的大牛写着色器就像是在玩玩具，随心所欲，天马行空。我什么时候可以达到写着色器犹如玩玩具的水平啊！">
+<meta name="keywords" content="OpenGL,GLSL,WebGL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="将shadertoy上的WebGL移植到桌面OpenGL中">
+<meta property="og:url" content="http://chaosink.github.io/2015/07/26/2015-07-26-将shadertoy上的WebGL移植到桌面OpenGL中/index.html">
+<meta property="og:site_name" content="Lin&#39;s Blog">
+<meta property="og:description" content="shadertoy上有许多着色器的炫酷示例，充分展现了着色器和可编程管线的强大之处。网站的名字起的很有意思，真的感觉上面的大牛写着色器就像是在玩玩具，随心所欲，天马行空。我什么时候可以达到写着色器犹如玩玩具的水平啊！">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2015-09-09T11:17:13.451Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="将shadertoy上的WebGL移植到桌面OpenGL中">
+<meta name="twitter:description" content="shadertoy上有许多着色器的炫酷示例，充分展现了着色器和可编程管线的强大之处。网站的名字起的很有意思，真的感觉上面的大牛写着色器就像是在玩玩具，随心所欲，天马行空。我什么时候可以达到写着色器犹如玩玩具的水平啊！">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chaosink.github.io/2015/07/26/2015-07-26-将shadertoy上的WebGL移植到桌面OpenGL中/"/>
+
+
+
+
+
+  <title>将shadertoy上的WebGL移植到桌面OpenGL中 | Lin's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lin's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chaosink.github.io/2015/07/26/2015-07-26-将shadertoy上的WebGL移植到桌面OpenGL中/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lin Hsu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">将shadertoy上的WebGL移植到桌面OpenGL中</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-07-26T13:03:40+08:00">
+                2015-07-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://www.shadertoy.com/" target="_blank" rel="noopener">shadertoy</a>上有许多着色器的炫酷示例，充分展现了着色器和可编程管线的强大之处。网站的名字起的很有意思，真的感觉上面的大牛写着色器就像是在玩玩具，随心所欲，天马行空。我什么时候可以达到写着色器犹如玩玩具的水平啊！<br><a id="more"></a><br>上面的示例都是基于WebGL写的，而且都是只用了fragment shader，这让我感觉很诧异，只用fragment shader就可以写出各种3D效果，甚至是真实感渲染！</p>
+<blockquote>
+<p>更新：其实是使用了ray tracing（光线跟踪）算法，该算法就是基于片段上的每一个pixel来进行渲染的，它以每一个pixel为出发点，通过跟踪这个点发出的光线（其实是反过来的）来计算这个点最终的颜色，优点是渲染效果很好，缺点是渲染速度很慢</p>
+</blockquote>
+<p>目前我还不会WebGL，所以并不能理解其中的奥秘，只能硬生生的将这些fragment shader直接移植到桌面OpenGL的fragment shader中，通过uniform传递一些全局参数。vertex shader只起到传递作用。调用程序中我先建一个从(0, 0)-(window_width, window_height)映射到(-1, -1)-(1, 1)的数组，然后送入vertex buffer中，让fragment shader对每一个点做一次运算。运行了几个示例，都是很卡，毕竟是逐点运算，不过WebGL怎么就做到运行地那么流畅呢？我很是好奇啊，等以后学了WebGL再说。</p>
+<p>移植的代码参考了<a href="https://github.com/alexjc/shadertoy-render" target="_blank" rel="noopener">shadertoy-render</a>，这是一个用python写的移植程序并可输出视频文件。</p>
+<hr>
+<p>下面上代码：</p>
+<h2 id="调用程序"><a href="#调用程序" class="headerlink" title="调用程序"></a>调用程序</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">GLfloat g_vertex_buffer_data[window_width][window_height][<span class="number">2</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; window_width; i++)</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; window_height; j++) &#123;</span><br><span class="line">		g_vertex_buffer_data[i][j][<span class="number">0</span>] = <span class="number">2.0f</span> / window_width * i - <span class="number">1</span>;</span><br><span class="line">		g_vertex_buffer_data[i][j][<span class="number">1</span>] = <span class="number">2.0f</span> / window_height * j - <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">GLuint vertexbuffer;</span><br><span class="line">glGenBuffers(<span class="number">1</span>, &amp;vertexbuffer);</span><br><span class="line">glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);</span><br><span class="line">glBufferData(GL_ARRAY_BUFFER, <span class="keyword">sizeof</span>(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);</span><br></pre></td></tr></table></figure>
+<p>渲染前先做从pixel到vertex的坐标映射。pixel是经过光栅化的一个像素，相对于窗口平面来说，而vertex是光栅化之前的一个顶点，相对于3D空间来说，当然也可以是2D空间。</p>
+<blockquote>
+<p>更新：这个繁琐的映射过程其实是不需要的，只需要画出画出铺满整个窗口的矩形即可，代码如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GLfloat g_vertex_buffer_data[<span class="number">12</span>] = &#123;</span><br><span class="line">	<span class="number">-1</span>,<span class="number">-1</span>,</span><br><span class="line">	<span class="number">-1</span>, <span class="number">1</span>,</span><br><span class="line">	 <span class="number">1</span>, <span class="number">1</span>,</span><br><span class="line">	<span class="number">-1</span>,<span class="number">-1</span>,</span><br><span class="line">	 <span class="number">1</span>, <span class="number">1</span>,</span><br><span class="line">	 <span class="number">1</span>,<span class="number">-1</span>&#125;;</span><br><span class="line">GLuint vertexbuffer;</span><br><span class="line">glGenBuffers(<span class="number">1</span>, &amp;vertexbuffer);</span><br><span class="line">glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);</span><br><span class="line">glBufferData(GL_ARRAY_BUFFER, <span class="keyword">sizeof</span>(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>详见另一篇博文<a href="/2015/07/27/对片段着色器的一点理解/">《对片段着色器的一点理解》</a></p>
+<hr>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glUniform1f(glGetUniformLocation(programID, <span class="string">"iGlobalTime"</span>), glfwGetTime());</span><br><span class="line">glUniform3f(glGetUniformLocation(programID, <span class="string">"iResolution"</span>), window_width, window_height, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<p>渲染过程中需要传递两个全局参数，为了简单，目前只用到了窗口大小和时间两个参数。</p>
+<hr>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">glUseProgram(programID);</span><br><span class="line">glEnableVertexAttribArray(<span class="number">0</span>);</span><br><span class="line">glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);</span><br><span class="line">glVertexAttribPointer(</span><br><span class="line">	<span class="number">0</span>,        <span class="comment">// attribute 0</span></span><br><span class="line">	<span class="number">2</span>,        <span class="comment">// size</span></span><br><span class="line">	GL_FLOAT, <span class="comment">// type</span></span><br><span class="line">	GL_FALSE, <span class="comment">// normalized?</span></span><br><span class="line">	<span class="number">0</span>,        <span class="comment">// stride</span></span><br><span class="line">	(<span class="keyword">void</span>*)<span class="number">0</span>  <span class="comment">// array buffer offset</span></span><br><span class="line">);</span><br><span class="line">glUniform1f(glGetUniformLocation(programID, <span class="string">"iGlobalTime"</span>), glfwGetTime());</span><br><span class="line">glUniform3f(glGetUniformLocation(programID, <span class="string">"iResolution"</span>), window_width, window_height, <span class="number">0</span>);</span><br><span class="line">glDrawArrays(GL_POINTS, <span class="number">0</span>, <span class="keyword">sizeof</span>(g_vertex_buffer_data) / <span class="number">8</span>);</span><br><span class="line">glDisableVertexAttribArray(<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<p>准备工作做好就可以渲染了。</p>
+<hr>
+<h2 id="vertex-shader"><a href="#vertex-shader" class="headerlink" title="vertex shader"></a>vertex shader</h2><figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#version 330 core</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">layout</span>(<span class="keyword">location</span> = <span class="number">0</span>) <span class="keyword">in</span> <span class="type">vec2</span> position;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> main()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">gl_Position</span> = <span class="type">vec4</span>(position, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>简单的传递顶点。</p>
+<hr>
+<h2 id="fragment-shader"><a href="#fragment-shader" class="headerlink" title="fragment shader"></a>fragment shader</h2><figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#version 330 core</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">uniform</span> <span class="type">vec3</span>      iResolution;           <span class="comment">// viewport resolution (in pixels)</span></span><br><span class="line"><span class="keyword">uniform</span> <span class="type">float</span>     iGlobalTime;           <span class="comment">// shader playback time (in seconds)</span></span><br><span class="line"><span class="keyword">uniform</span> <span class="type">vec4</span>      iMouse;                <span class="comment">// mouse pixel coords</span></span><br><span class="line"><span class="keyword">uniform</span> <span class="type">vec4</span>      iDate;                 <span class="comment">// (year, month, day, time in seconds)</span></span><br><span class="line"><span class="keyword">uniform</span> <span class="type">float</span>     iSampleRate;           <span class="comment">// sound sample rate (i.e., 44100)</span></span><br><span class="line"><span class="keyword">uniform</span> <span class="type">sampler2D</span> iChannel0;             <span class="comment">// input channel. XX = 2D/Cube</span></span><br><span class="line"><span class="keyword">uniform</span> <span class="type">sampler2D</span> iChannel1;             <span class="comment">// input channel. XX = 2D/Cube</span></span><br><span class="line"><span class="keyword">uniform</span> <span class="type">sampler2D</span> iChannel2;             <span class="comment">// input channel. XX = 2D/Cube</span></span><br><span class="line"><span class="keyword">uniform</span> <span class="type">sampler2D</span> iChannel3;             <span class="comment">// input channel. XX = 2D/Cube</span></span><br><span class="line"><span class="keyword">uniform</span> <span class="type">vec3</span>      iChannelResolution[<span class="number">4</span>]; <span class="comment">// channel resolution (in pixels)</span></span><br><span class="line"><span class="keyword">uniform</span> <span class="type">float</span>     iChannelTime[<span class="number">4</span>];       <span class="comment">// channel playback time (in sec)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//insert WebGL code here</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> main()</span><br><span class="line">&#123;</span><br><span class="line">    mainImage(<span class="built_in">gl_FragColor</span>, <span class="built_in">gl_FragCoord</span>.xy);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>前面的几个uniform是WebGL中会用到的全局参数，目前只用到了窗口大小和时间。<br>WebGL的主函数为mainIgame()，所以在main()中调用一下就好了，函数的第一个参数是一个传出参数，是经过计算后的当前片段的颜色，第二个参数是一个传入参数，是当前片段的坐标，范围为0-window_width和0-window_height。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
+          
+            <a href="/tags/GLSL/" rel="tag"># GLSL</a>
+          
+            <a href="/tags/WebGL/" rel="tag"># WebGL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/07/24/2015-07-24-将OpenGL画面导出为视频文件/" rel="next" title="将OpenGL画面导出为视频文件">
+                <i class="fa fa-chevron-left"></i> 将OpenGL画面导出为视频文件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/07/27/2015-07-27-Valuable-Articles/" rel="prev" title="Valuable Articles">
+                Valuable Articles <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Lin Hsu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">Artikel</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">Tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#调用程序"><span class="nav-number">1.</span> <span class="nav-text">调用程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vertex-shader"><span class="nav-number">2.</span> <span class="nav-text">vertex shader</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fragment-shader"><span class="nav-number">3.</span> <span class="nav-text">fragment shader</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lin Hsu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
